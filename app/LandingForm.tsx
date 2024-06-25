@@ -183,7 +183,7 @@ export default function LandingForm({ setShowForm }: Params) {
         Training is open to all Africans.{" "}
         <span className="text-amber-500">
           Usernames on all handles will be fact checked to confirm that you are
-          following us, so don't bother trying to outsmart the system as you
+          following us, so do not bother trying to outsmart the system as you
           will be kicked out of the program.
         </span>
       </p>
