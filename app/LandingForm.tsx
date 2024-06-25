@@ -358,10 +358,10 @@ export default function LandingForm({ setShowForm }: Params) {
             >
               Join community
             </button>
-            <p className="text-xs text-gray-500 md:hidden">
+            {/* <p className="text-xs text-gray-500 md:hidden">
               Clicking this automatically submits the form if all details are
               valid
-            </p>
+            </p> */}
           </div>
           <div className="w-full md:w-full  rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
             <div className="space-y-1">
@@ -385,10 +385,10 @@ export default function LandingForm({ setShowForm }: Params) {
             >
               <Youtube className="h-6 w-6" /> <p>Subscribe</p>
             </button>
-            <p className="text-xs text-gray-500 md:hidden">
+            {/* <p className="text-xs text-gray-500 md:hidden">
               Clicking this automatically submits the form if all details are
               valid
-            </p>
+            </p> */}
           </div>
         </div>
       </div>
