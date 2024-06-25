@@ -102,7 +102,7 @@ export default function LandingForm({ setShowForm }: Params) {
             />
           </div>
           <div className="border p-2 w-full space-y-1 flex flex-col border-accent">
-            <label className="text-xs">Phone no</label>
+            <label className="text-xs">Phone number</label>
             <input
               type="text"
               {...register("phone")}
@@ -187,9 +187,9 @@ export default function LandingForm({ setShowForm }: Params) {
                 </p>
               </div>
               <a
-                href=""
+                href="https://x.com/EliteglobalAI?t=A43oBep-s12UjzqxT0BmOw&s=09"
                 target="_blank"
-                className="p-2 border border-accent rounded-sm hover:animate-pulse"
+                className="p-2 border border-accent rounded-sm animate-pulse"
               >
                 <Twitter className="h-6 w-6" />
               </a>
@@ -245,7 +245,7 @@ export default function LandingForm({ setShowForm }: Params) {
               <a
                 href="https://www.linkedin.com/company/elite-global-ai/"
                 target="_blank"
-                className="p-2 border border-accent rounded-sm hover:animate-pulse"
+                className="p-2 border border-accent rounded-sm animate-pulse"
               >
                 <Linkedin className="h-6 w-6" />
               </a>
@@ -275,7 +275,7 @@ export default function LandingForm({ setShowForm }: Params) {
               <a
                 href="https://www.facebook.com/profile.php?id=61556668897673&mibextid=LQQJ4d"
                 target="_blank"
-                className="p-2 border border-accent rounded-sm hover:animate-pulse"
+                className="p-2 border border-accent rounded-sm animate-pulse"
               >
                 <Facebook className="h-6 w-6" />
               </a>
@@ -305,7 +305,7 @@ export default function LandingForm({ setShowForm }: Params) {
               <a
                 href="https://www.instagram.com/eliteglobalai_?igsh=bzNsbXVna3Q2dnJi"
                 target="_blank"
-                className="p-2 border border-accent rounded-sm hover:animate-pulse"
+                className="p-2 border border-accent rounded-sm animate-pulse"
               >
                 <Instagram className="h-6 w-6" />
               </a>
