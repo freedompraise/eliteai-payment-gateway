@@ -151,7 +151,7 @@ export default function LandingForm({ setShowForm }: Params) {
               <div className="space-y-1">
                 <p className="text-sm font-semibold">Follow us on twitter</p>
                 <p className="text-xs text-gray-200">
-                  We'd use your username for validation
+                  We&apos;d use your username for validation
                 </p>
               </div>
               <button className="p-2 border border-accent rounded-sm hover:animate-pulse">
