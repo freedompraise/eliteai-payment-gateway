@@ -378,10 +378,9 @@ export default function LandingForm({ setShowForm }: Params) {
               className="p-2 border flex items-center space-x-3 justify-center rounded-sm border-accent text-white w-full hover:animate-pulse"
               onClick={() => {
                 window.open(
-                  "https://chat.whatsapp.com/DoR3oGYto0F1Tc6W3OKJfr",
+                  "https://youtube.com/@eliteglobalai?si=N2Lf-y8JU4wnb2ay",
                   "_blank"
                 );
-                setIsCommunityJoined(true);
               }}
             >
               <Youtube className="h-6 w-6" /> <p>Subscribe</p>
