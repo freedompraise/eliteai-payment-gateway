@@ -57,13 +57,13 @@ export default function LandingForm({ setShowForm }: Params) {
       toast.error("Sorry we couldn't submit your data at this time.");
     }
 
-    console.log(data, values, response);
+    // console.log(data, values, response);
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="rounded-sm py-10 md:py-0 md:overflow-clip"
+      className="rounded-sm py-10 md:py-0 md:overflow-clip pb-20 md:pb-0"
     >
       <button
         onClick={() => setShowForm(false)}
@@ -146,7 +146,7 @@ export default function LandingForm({ setShowForm }: Params) {
 
       <div className="flex w-full justify-center pt-10 md:pt-20">
         <div className="flex space-y-4 md:space-y-0 md:space-x-10 flex-col md:flex-row">
-          <div className="w-full md:w-80 rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
+          <div className="w-full md:w-80 flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
             <div className="flex justify-between space-x-4 items-center">
               <div className="space-y-1">
                 <p className="text-sm font-semibold">Follow us on twitter</p>
@@ -177,7 +177,7 @@ export default function LandingForm({ setShowForm }: Params) {
               <p className="text-sm font-semibold">
                 Join our Whatsapp community
               </p>
-              <p className="text-xs text-gray-200">Click below to join</p>
+              <p className="text-xs text-gray-200">Click below to join.</p>
             </div>
             <button
               className="p-2 border rounded-sm border-accent text-white w-full hover:animate-pulse"
@@ -191,6 +191,10 @@ export default function LandingForm({ setShowForm }: Params) {
             >
               Join community
             </button>
+            <p className="text-xs text-gray-500 md:hidden">
+              Clicking this automatically submits the form if all details are
+              valid
+            </p>
           </div>
         </div>
       </div>
