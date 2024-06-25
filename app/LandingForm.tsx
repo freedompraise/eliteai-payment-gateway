@@ -2,7 +2,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Facebook, Instagram, Linkedin, Twitter, X } from "lucide-react";
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Twitter,
+  X,
+  Youtube,
+} from "lucide-react";
 import { z } from "zod";
 import { landingFormSchema } from "./schemas"; // Adjust the import based on your file structure
 import { toast } from "react-toastify";
@@ -175,8 +182,9 @@ export default function LandingForm({ setShowForm }: Params) {
         This program is a Free remote training + Internship placement program.
         Training is open to all Africans.{" "}
         <span className="text-amber-500">
-          Make sure to follow all social media handles as submissions will be
-          vetted before acceptace.
+          Usernames on all handles will be fact checked to confirm that you are
+          following us, so don't bother trying to outsmart the system as you
+          will be kicked out of the program.
         </span>
       </p>
 
@@ -349,6 +357,34 @@ export default function LandingForm({ setShowForm }: Params) {
               }}
             >
               Join community
+            </button>
+            <p className="text-xs text-gray-500 md:hidden">
+              Clicking this automatically submits the form if all details are
+              valid
+            </p>
+          </div>
+          <div className="w-full md:w-full  rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
+            <div className="space-y-1">
+              <p className="text-sm font-semibold">
+                Subscribe to our youtube channel
+              </p>
+              <p className="text-xs text-gray-200">
+                Do well to Subscribe to our youtube channel as courses would be
+                provided there.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="p-2 border flex items-center space-x-3 justify-center rounded-sm border-accent text-white w-full hover:animate-pulse"
+              onClick={() => {
+                window.open(
+                  "https://chat.whatsapp.com/DoR3oGYto0F1Tc6W3OKJfr",
+                  "_blank"
+                );
+                setIsCommunityJoined(true);
+              }}
+            >
+              <Youtube className="h-6 w-6" /> <p>Subscribe</p>
             </button>
             <p className="text-xs text-gray-500 md:hidden">
               Clicking this automatically submits the form if all details are
