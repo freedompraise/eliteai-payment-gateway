@@ -173,11 +173,41 @@ export default function LandingForm({ setShowForm }: Params) {
       </div>
       <p className="text-xs mt-3  text-gray-100">
         This program is a Free remote training + Internship placement program.
-        Training is open to all Africans.
+        Training is open to all Africans.{" "}
+        <span className="text-amber-500">
+          Make sure to follow all social media handles as submission would be
+          vetted before acceptace.
+        </span>
       </p>
 
       <div className="flex w-full justify-center pt-10 md:pt-20">
         <div className="grid grid-cols-1 md:grid-cols-2 space-y-4 md:space-y-0 md:gap-10 w-full flex-col md:flex-row">
+          <div className="w-full md:w-full flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
+            <div className="flex justify-between space-x-4 items-center">
+              <div className="space-y-1">
+                <p className="text-sm font-semibold">LinkedIn URL</p>
+                <p className="text-xs text-gray-200">
+                  We&apos;d use your username for validation
+                </p>
+              </div>
+              <div className="p-2">
+                <Linkedin className="h-6 w-6" />
+              </div>
+            </div>
+            <div className="border-b p-2 space-y-1 flex flex-col border-b-accent">
+              <input
+                type="text"
+                placeholder="Enter your Linkedin URL"
+                {...register("linkedinUrl")}
+                className="text-sm outline-none bg-transparent text-white border-0"
+              />
+              {errors.linkedinUrl && (
+                <p className="text-red-500 text-xs">
+                  {errors.linkedinUrl.message}
+                </p>
+              )}
+            </div>
+          </div>
           <div className="w-full md:w-full flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
             <div className="flex justify-between space-x-4 items-center">
               <div className="space-y-1">
@@ -208,32 +238,7 @@ export default function LandingForm({ setShowForm }: Params) {
               )}
             </div>
           </div>
-          <div className="w-full md:w-full flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
-            <div className="flex justify-between space-x-4 items-center">
-              <div className="space-y-1">
-                <p className="text-sm font-semibold">LinkedIn URL</p>
-                <p className="text-xs text-gray-200">
-                  We&apos;d use your username for validation
-                </p>
-              </div>
-              <div className="p-2">
-                <Linkedin className="h-6 w-6" />
-              </div>
-            </div>
-            <div className="border-b p-2 space-y-1 flex flex-col border-b-accent">
-              <input
-                type="text"
-                placeholder="Enter your Linkedin URL"
-                {...register("linkedinUrl")}
-                className="text-sm outline-none bg-transparent text-white border-0"
-              />
-              {errors.linkedinUrl && (
-                <p className="text-red-500 text-xs">
-                  {errors.linkedinUrl.message}
-                </p>
-              )}
-            </div>
-          </div>
+
           <div className="w-full md:w-full flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
             <div className="flex justify-between space-x-4 items-center">
               <div className="space-y-1">
