@@ -1,16 +1,16 @@
 // app/api/update-sheet/route.ts
 import { google, sheets_v4 } from "googleapis";
 import { NextResponse } from "next/server";
-import path from "path";
-import { promises as fs } from "fs";
 
 export async function POST(request: Request) {
   const { values } = await request.json();
 
-  const keyFile = path.join(process.cwd(), process.env.GOOGLE_APP_CRED || "");
+  const keyFileBase64 = process.env.GOOGLE_APP_CRED || "";
+  const keyFileBuffer = Buffer.from(keyFileBase64, "base64");
+  const keyFile = keyFileBuffer.toString("utf-8");
 
   const auth = new google.auth.GoogleAuth({
-    keyFile: keyFile,
+    credentials: JSON.parse(keyFile),
     scopes: ["https://www.googleapis.com/auth/spreadsheets"],
   });
 
