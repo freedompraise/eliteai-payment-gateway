@@ -175,7 +175,7 @@ export default function LandingForm({ setShowForm }: Params) {
         This program is a Free remote training + Internship placement program.
         Training is open to all Africans.{" "}
         <span className="text-amber-500">
-          Make sure to follow all social media handles as submission would be
+          Make sure to follow all social media handles as submissions will be
           vetted before acceptace.
         </span>
       </p>
