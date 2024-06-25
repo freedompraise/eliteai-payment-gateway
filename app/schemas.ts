@@ -15,4 +15,19 @@ export const landingFormSchema = z.object({
   twitterUsername: z
     .string()
     .min(3, { message: "Twitter username is required" }),
+  linkedinUsername: z
+    .string()
+    .min(3, { message: "Linkedin username is required" }),
+  facebookUsername: z
+    .string()
+    .min(3, { message: "Facebook username is required" }),
+  instagramUsername: z
+    .string()
+    .min(3, { message: "Instagram username is required" }),
+  linkedinUrl: z.string().min(3, { message: "Linkedin url is required" }),
+  programs: z.enum([
+    "Education",
+    "Digital marketing and content creation",
+    "Data/Business analytics",
+  ]),
 });

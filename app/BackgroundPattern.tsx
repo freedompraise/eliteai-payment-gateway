@@ -1,7 +1,7 @@
 export function BackgroundPattern() {
   return (
     <svg
-      className="block absolute object-cover w-[100vw] z-10 h-[100vh]"
+      className="block fixed top-0 right-0 object-cover w-[100vw] z-10 h-[100vh]"
       viewBox="0 0 1728 1117"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

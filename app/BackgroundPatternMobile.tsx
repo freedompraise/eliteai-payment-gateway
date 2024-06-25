@@ -1,7 +1,7 @@
 export default function BackgroundPatternMobile() {
   return (
     <svg
-      className="block absolute z-10 object-cover w-[100vw] h-[100vh]"
+      className="block fixed h-[calc(100vh-8rem)] top-24 right-0 z-10 object-cover w-[100vw]"
       viewBox="0 0 430 932"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

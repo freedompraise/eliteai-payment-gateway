@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Twitter, X } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, X } from "lucide-react";
 import { z } from "zod";
 import { landingFormSchema } from "./schemas"; // Adjust the import based on your file structure
 import { toast } from "react-toastify";
@@ -15,6 +15,7 @@ interface Params {
 
 export default function LandingForm({ setShowForm }: Params) {
   const [isCommunityJoined, setIsCommunityJoined] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
@@ -26,11 +27,11 @@ export default function LandingForm({ setShowForm }: Params) {
     resolver: zodResolver(landingFormSchema),
   });
 
-  const onSubmit = async (data: LandingFormInputs) => {
+  const onSubmit = async (formData: LandingFormInputs) => {
+    setIsSubmitting(true);
     if (!isCommunityJoined)
-      return toast.error("You have not joined the community yet.");
+      toast.info("Do make sure you have joined the community.");
 
-    const formData = data;
     toast.info("Submitting...");
     const values = [
       formData.fullName,
@@ -38,8 +39,13 @@ export default function LandingForm({ setShowForm }: Params) {
       formData.phone,
       formData.country,
       formData.age.toString(),
+      formData.programs,
       formData.twitterUsername,
-      isCommunityJoined ? "Joined" : "Not Joined",
+      formData.linkedinUrl,
+      formData.linkedinUsername,
+      formData.facebookUsername,
+      formData.instagramUsername,
+      // isCommunityJoined ? "Joined" : "Not Joined",
     ];
 
     const response = await fetch("/api/update-sheet", {
@@ -52,8 +58,10 @@ export default function LandingForm({ setShowForm }: Params) {
 
     if (response.ok) {
       toast.success("Form submitted successfully");
+      setIsSubmitting(false);
       reset();
     } else {
+      setIsSubmitting(false);
       toast.error("Sorry we couldn't submit your data at this time.");
     }
 
@@ -63,9 +71,10 @@ export default function LandingForm({ setShowForm }: Params) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="rounded-sm py-10 md:py-0 md:overflow-clip pb-20 md:pb-0"
+      className="rounded-sm h-max py-10 md:py-0 pb-20 md:pb-0"
     >
       <button
+        type="button"
         onClick={() => setShowForm(false)}
         className="flex md:hidden absolute top-7 right-8"
       >
@@ -74,53 +83,76 @@ export default function LandingForm({ setShowForm }: Params) {
       <h1 className="flex md:hidden text-2xl pt-5 pb-8">
         Let&apos;s get you registered{" "}
       </h1>
-      <div className="flex flex-col md:flex-row md:px-0 rounded-sm overflow-clip">
-        <div className="border p-2 space-y-1 flex flex-col border-accent">
-          <label className="text-xs">Email</label>
-          <input
-            type="email"
-            {...register("email")}
-            className="text-sm outline-none bg-transparent text-white border-0"
-          />
+      <div className="md:px-0 rounded-sm overflow-clip">
+        <div className="flex flex-col md:flex-row ">
+          <div className="border p-2 space-y-1 w-full flex flex-col border-accent">
+            <label className="text-xs">Email</label>
+            <input
+              type="email"
+              {...register("email")}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
+          <div className="border w-full p-2 space-y-1 flex flex-col border-accent">
+            <label className="text-xs">Full name</label>
+            <input
+              type="text"
+              {...register("fullName")}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
+          <div className="border p-2 w-full space-y-1 flex flex-col border-accent">
+            <label className="text-xs">Phone no</label>
+            <input
+              type="text"
+              {...register("phone")}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
         </div>
-        <div className="border p-2 space-y-1 flex flex-col border-accent">
-          <label className="text-xs">Full name</label>
-          <input
-            type="text"
-            {...register("fullName")}
-            className="text-sm outline-none bg-transparent text-white border-0"
-          />
+        <div className="flex flex-col md:flex-row ">
+          <div className="border p-2 w-full space-y-1 flex flex-col border-accent">
+            <label htmlFor="programs" className="text-xs">
+              Pick a program
+            </label>
+            <select
+              id="programs"
+              {...register("programs")}
+              defaultValue={"Education"}
+              className="bg-transparent text-sm outline-none border-none"
+            >
+              <option value="Education">Education</option>
+              <option value="Digital marketing and content creation">
+                Digital marketing and content creation
+              </option>
+              <option value="Data/Business analytics">
+                Data/Business analytics
+              </option>
+            </select>
+          </div>
+          <div className="border p-2 w-full space-y-1 flex flex-col border-accent">
+            <label className="text-xs">Country</label>
+            <input
+              type="text"
+              {...register("country")}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
+          <div className="border p-2 w-full space-y-1 flex flex-col border-accent">
+            <label className="text-xs">Age</label>
+            <input
+              type="number"
+              {...register("age", { valueAsNumber: true })}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
         </div>
-        <div className="border p-2 space-y-1 flex flex-col border-accent">
-          <label className="text-xs">Phone no</label>
-          <input
-            type="text"
-            {...register("phone")}
-            className="text-sm outline-none bg-transparent text-white border-0"
-          />
-        </div>
-        <div className="border p-2 space-y-1 flex flex-col border-accent">
-          <label className="text-xs">Country</label>
-          <input
-            type="text"
-            {...register("country")}
-            className="text-sm outline-none bg-transparent text-white border-0"
-          />
-        </div>
-        <div className="border p-2 md:w-16 space-y-1 flex flex-col border-accent">
-          <label className="text-xs">Age</label>
-          <input
-            type="number"
-            {...register("age", { valueAsNumber: true })}
-            className="text-sm outline-none bg-transparent text-white border-0"
-          />
-        </div>
-        <button
+        {/* <button
           type="submit"
           className="w-16 hidden hover:animate-pulse bg-accent text-white md:flex items-center justify-center"
         >
           <ArrowRight />
-        </button>
+        </button> */}
       </div>
       <div className="flex space-x-1">
         {errors.email && (
@@ -145,8 +177,8 @@ export default function LandingForm({ setShowForm }: Params) {
       </p>
 
       <div className="flex w-full justify-center pt-10 md:pt-20">
-        <div className="flex space-y-4 md:space-y-0 md:space-x-10 flex-col md:flex-row">
-          <div className="w-full md:w-80 flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
+        <div className="grid grid-cols-1 md:grid-cols-2 space-y-4 md:space-y-0 md:gap-10 w-full flex-col md:flex-row">
+          <div className="w-full md:w-full flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
             <div className="flex justify-between space-x-4 items-center">
               <div className="space-y-1">
                 <p className="text-sm font-semibold">Follow us on twitter</p>
@@ -154,9 +186,13 @@ export default function LandingForm({ setShowForm }: Params) {
                   We&apos;d use your username for validation
                 </p>
               </div>
-              <button className="p-2 border border-accent rounded-sm hover:animate-pulse">
+              <a
+                href=""
+                target="_blank"
+                className="p-2 border border-accent rounded-sm hover:animate-pulse"
+              >
                 <Twitter className="h-6 w-6" />
-              </button>
+              </a>
             </div>
             <div className="border-b p-2 space-y-1 flex flex-col border-b-accent">
               <input
@@ -172,7 +208,124 @@ export default function LandingForm({ setShowForm }: Params) {
               )}
             </div>
           </div>
-          <div className="w-full md:w-80  rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
+          <div className="w-full md:w-full flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
+            <div className="flex justify-between space-x-4 items-center">
+              <div className="space-y-1">
+                <p className="text-sm font-semibold">LinkedIn URL</p>
+                <p className="text-xs text-gray-200">
+                  We&apos;d use your username for validation
+                </p>
+              </div>
+              <div className="p-2">
+                <Linkedin className="h-6 w-6" />
+              </div>
+            </div>
+            <div className="border-b p-2 space-y-1 flex flex-col border-b-accent">
+              <input
+                type="text"
+                placeholder="Enter your Linkedin URL"
+                {...register("linkedinUrl")}
+                className="text-sm outline-none bg-transparent text-white border-0"
+              />
+              {errors.linkedinUrl && (
+                <p className="text-red-500 text-xs">
+                  {errors.linkedinUrl.message}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="w-full md:w-full flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
+            <div className="flex justify-between space-x-4 items-center">
+              <div className="space-y-1">
+                <p className="text-sm font-semibold">Follow us on LinkedIn</p>
+                <p className="text-xs text-gray-200">
+                  We&apos;d use your username for validation
+                </p>
+              </div>
+              <a
+                href="https://www.linkedin.com/company/elite-global-ai/"
+                target="_blank"
+                className="p-2 border border-accent rounded-sm hover:animate-pulse"
+              >
+                <Linkedin className="h-6 w-6" />
+              </a>
+            </div>
+            <div className="border-b p-2 space-y-1 flex flex-col border-b-accent">
+              <input
+                type="text"
+                placeholder="Enter username"
+                {...register("linkedinUsername")}
+                className="text-sm outline-none bg-transparent text-white border-0"
+              />
+              {errors.linkedinUsername && (
+                <p className="text-red-500 text-xs">
+                  {errors.linkedinUsername.message}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="w-full md:w-full flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
+            <div className="flex justify-between space-x-4 items-center">
+              <div className="space-y-1">
+                <p className="text-sm font-semibold">Follow us on Facebook</p>
+                <p className="text-xs text-gray-200">
+                  We&apos;d use your username for validation
+                </p>
+              </div>
+              <a
+                href="https://www.facebook.com/profile.php?id=61556668897673&mibextid=LQQJ4d"
+                target="_blank"
+                className="p-2 border border-accent rounded-sm hover:animate-pulse"
+              >
+                <Facebook className="h-6 w-6" />
+              </a>
+            </div>
+            <div className="border-b p-2 space-y-1 flex flex-col border-b-accent">
+              <input
+                type="text"
+                placeholder="Enter username"
+                {...register("facebookUsername")}
+                className="text-sm outline-none bg-transparent text-white border-0"
+              />
+              {errors.facebookUsername && (
+                <p className="text-red-500 text-xs">
+                  {errors.facebookUsername.message}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="w-full md:w-full flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
+            <div className="flex justify-between space-x-4 items-center">
+              <div className="space-y-1">
+                <p className="text-sm font-semibold">Follow us on Instagram</p>
+                <p className="text-xs text-gray-200">
+                  We&apos;d use your username for validation
+                </p>
+              </div>
+              <a
+                href="https://www.instagram.com/eliteglobalai_?igsh=bzNsbXVna3Q2dnJi"
+                target="_blank"
+                className="p-2 border border-accent rounded-sm hover:animate-pulse"
+              >
+                <Instagram className="h-6 w-6" />
+              </a>
+            </div>
+            <div className="border-b p-2 space-y-1 flex flex-col border-b-accent">
+              <input
+                type="text"
+                placeholder="Enter username"
+                {...register("instagramUsername")}
+                className="text-sm outline-none bg-transparent text-white border-0"
+              />
+              {errors.instagramUsername && (
+                <p className="text-red-500 text-xs">
+                  {errors.instagramUsername.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="w-full md:w-full  rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
             <div className="space-y-1">
               <p className="text-sm font-semibold">
                 Join our Whatsapp community
@@ -180,6 +333,7 @@ export default function LandingForm({ setShowForm }: Params) {
               <p className="text-xs text-gray-200">Click below to join.</p>
             </div>
             <button
+              type="button"
               className="p-2 border rounded-sm border-accent text-white w-full hover:animate-pulse"
               onClick={() => {
                 window.open(
@@ -200,9 +354,10 @@ export default function LandingForm({ setShowForm }: Params) {
       </div>
       <button
         type="submit"
-        className="md:hidden p-3 w-full mt-10 hover:animate-pulse bg-accent text-white items-center justify-center"
+        disabled={isSubmitting}
+        className="p-3 w-full mt-10 hover:animate-pulse rounded-sm bg-accent text-white items-center justify-center"
       >
-        Submit
+        {!isSubmitting ? "Submit" : "Submitting..."}
       </button>
     </form>
   );

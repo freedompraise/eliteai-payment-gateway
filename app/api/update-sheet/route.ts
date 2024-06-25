@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.SHEET_ID || "",
       valueInputOption: "RAW",
-      range: "Sheet1!A:E",
+      range: "Sheet1!A:K",
       requestBody: {
         values: [values],
       },
