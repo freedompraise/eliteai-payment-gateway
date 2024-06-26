@@ -91,8 +91,8 @@ export default function AdminDashboard({
   ];
 
   return (
-    <div className="h-screen w-screen fixed flex items-center justify-center top-0 right-0 px-8 bg-black z-40">
-      <div className=" min-h-[100vh] w-full text-white py-10 bg-black px-8 md:px-[80px]">
+    <div className="h-screen w-screen fixed flex items-center justify-center top-0 right-0 bg-black z-40">
+      <div className=" min-h-[100vh] w-full text-white py-10 bg-black px-4 md:px-[80px]">
         <div className="flex space-x-2 pb-10 items-center">
           <button
             onClick={() => {

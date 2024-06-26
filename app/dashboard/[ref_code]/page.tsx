@@ -86,7 +86,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className=" min-h-[100vh] text-white py-10 bg-black px-8 md:px-[80px]">
+    <div className=" min-h-[100vh] text-white py-10 bg-black px-4 md:px-[80px]">
       <h1 className="text-xl pb-10 font-semibold text-white/70">Dashboard</h1>
       <div className="p-4 bg-white/5 rounded border border-accent/10">
         <div className="pb-4">
