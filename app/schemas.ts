@@ -24,6 +24,9 @@ export const landingFormSchema = z.object({
   instagramUsername: z
     .string()
     .min(3, { message: "Instagram username is required" }),
+  youtubeUsername: z
+    .string()
+    .min(3, { message: "Youtube username is required" }),
   linkedinUrl: z.string().min(3, { message: "Linkedin url is required" }),
   programs: z.enum([
     "Education",

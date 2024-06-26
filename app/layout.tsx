@@ -3,6 +3,7 @@ import { K2D } from "next/font/google";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Suspense } from "react";
 
 const k2d = K2D({
   subsets: ["latin"],
@@ -23,8 +24,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={k2d.className}>
-        {children}
-        <ToastContainer position="bottom-center" theme="dark" hideProgressBar />
+        <Suspense>
+          {children}
+          <ToastContainer
+            position="bottom-center"
+            theme="dark"
+            hideProgressBar
+          />
+        </Suspense>
       </body>
     </html>
   );

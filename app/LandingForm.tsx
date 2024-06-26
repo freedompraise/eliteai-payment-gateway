@@ -13,6 +13,9 @@ import {
 import { z } from "zod";
 import { landingFormSchema } from "./schemas"; // Adjust the import based on your file structure
 import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
+import { format } from "date-fns";
+import { useSearchParams } from "next/navigation";
 
 type LandingFormInputs = z.infer<typeof landingFormSchema>;
 
@@ -21,6 +24,9 @@ interface Params {
 }
 
 export default function LandingForm({ setShowForm }: Params) {
+  const searchParams = useSearchParams();
+  const ref = searchParams.get("ref");
+
   const [isCommunityJoined, setIsCommunityJoined] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -35,23 +41,27 @@ export default function LandingForm({ setShowForm }: Params) {
   });
 
   const onSubmit = async (formData: LandingFormInputs) => {
+    const currentDate = new Date();
     setIsSubmitting(true);
     if (!isCommunityJoined)
       toast.info("Do make sure you have joined the community.");
 
     toast.info("Submitting...");
     const values = [
+      uuidv4(),
       formData.fullName,
       formData.email,
       formData.phone,
       formData.country,
       formData.age.toString(),
       formData.programs,
+      formData.youtubeUsername,
       formData.twitterUsername,
       formData.linkedinUrl,
       formData.linkedinUsername,
       formData.facebookUsername,
       formData.instagramUsername,
+      format(currentDate, "MMMM d, yyyy"),
       // isCommunityJoined ? "Joined" : "Not Joined",
     ];
 
@@ -60,19 +70,18 @@ export default function LandingForm({ setShowForm }: Params) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ values }),
+      body: JSON.stringify({ values, ref }),
     });
 
     if (response.ok) {
       toast.success("Form submitted successfully");
       setIsSubmitting(false);
       reset();
+      setShowForm(false);
     } else {
       setIsSubmitting(false);
       toast.error("Sorry we couldn't submit your data at this time.");
     }
-
-    // console.log(data, values, response);
   };
 
   return (
@@ -190,6 +199,39 @@ export default function LandingForm({ setShowForm }: Params) {
 
       <div className="flex w-full justify-center pt-10 md:pt-20">
         <div className="grid grid-cols-1 md:grid-cols-2 space-y-4 md:space-y-0 md:gap-10 w-full flex-col md:flex-row">
+          <div className="w-full md:w-full flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
+            <div className="flex justify-between space-x-4 items-center">
+              <div className="space-y-1">
+                <p className="text-sm font-semibold">
+                  Follow us on our youtube channel
+                </p>
+                <p className="text-xs text-gray-200">
+                  We&apos;d use your username for validation
+                </p>
+              </div>
+              <a
+                href="https://youtube.com/@eliteglobalai?si=N2Lf-y8JU4wnb2ay"
+                target="_blank"
+                className="p-2 border border-accent rounded-sm animate-pulse"
+              >
+                <Youtube className="h-6 w-6" />
+              </a>
+            </div>
+            <div className="border-b p-2 space-y-1 flex flex-col border-b-accent">
+              <input
+                type="text"
+                placeholder="Enter username"
+                {...register("youtubeUsername")}
+                className="text-sm outline-none bg-transparent text-white border-0"
+              />
+              {errors.youtubeUsername && (
+                <p className="text-red-500 text-xs">
+                  {errors.youtubeUsername.message}
+                </p>
+              )}
+            </div>
+          </div>
+
           <div className="w-full md:w-full flex flex-col justify-between rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
             <div className="flex justify-between space-x-4 items-center">
               <div className="space-y-1">
@@ -357,33 +399,6 @@ export default function LandingForm({ setShowForm }: Params) {
               }}
             >
               Join community
-            </button>
-            {/* <p className="text-xs text-gray-500 md:hidden">
-              Clicking this automatically submits the form if all details are
-              valid
-            </p> */}
-          </div>
-          <div className="w-full md:w-full  rounded-sm bg-black/30 p-4 space-y-3 border border-accent/40 backdrop-blur-lg">
-            <div className="space-y-1">
-              <p className="text-sm font-semibold">
-                Subscribe to our youtube channel
-              </p>
-              <p className="text-xs text-gray-200">
-                Do well to Subscribe to our youtube channel as courses would be
-                provided there.
-              </p>
-            </div>
-            <button
-              type="button"
-              className="p-2 border flex items-center space-x-3 justify-center rounded-sm border-accent text-white w-full hover:animate-pulse"
-              onClick={() => {
-                window.open(
-                  "https://youtube.com/@eliteglobalai?si=N2Lf-y8JU4wnb2ay",
-                  "_blank"
-                );
-              }}
-            >
-              <Youtube className="h-6 w-6" /> <p>Subscribe</p>
             </button>
             {/* <p className="text-xs text-gray-500 md:hidden">
               Clicking this automatically submits the form if all details are
