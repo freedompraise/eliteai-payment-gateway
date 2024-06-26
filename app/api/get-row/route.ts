@@ -19,6 +19,8 @@ export async function GET(request: NextRequest) {
     auth: authClient,
   });
 
+  console.log("env data: ", process.env.SHEET_ID, keyFile);
+
   try {
     console.log("Fetching data from Sheet2");
     const response = await sheets.spreadsheets.values.get({
