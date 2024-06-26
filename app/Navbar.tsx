@@ -27,6 +27,7 @@ export default function Navbar() {
         .createHash("sha256")
         .update(adminCode.trim())
         .digest("hex");
+      console.log(hash, process.env.NEXT_PUBLIC_PASS);
       if (hash === process.env.NEXT_PUBLIC_PASS?.toString()) {
         setShowAdminDashboardPopup(false);
         setShowAdminDashboard(true);
