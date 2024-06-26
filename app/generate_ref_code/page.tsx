@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Copy, Lock } from "lucide-react";
+import { ChevronLeft, Copy, Lock } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
@@ -80,16 +80,23 @@ export default function GenerateRefCode() {
       <div className="h-screen w-screen fixed flex items-center justify-center top-0 right-0 px-8 bg-black z-40">
         <div className="md:max-w-lg space-y-6 border bg-black p-6 rounded border-accent/10">
           <div>
-            <h1 className="text-lg font-medium">
-              Welcome to the Elite AI Ambassador Program
-            </h1>
-            <p className="text-xs text-white/70">
-              To get access code fill in the form and press enter.{" "}
-              <span className="text-amber-300">
-                <span className="font-bold">Note:</span> An email will be sent
-                to you with your referral link as well.
-              </span>
-            </p>
+            <div className="flex items-start space-x-3">
+              <button onClick={() => window.history.back()}>
+                <ChevronLeft />
+              </button>
+              <div>
+                <h1 className="text-lg font-medium">
+                  Welcome to the Elite AI Ambassador Program
+                </h1>
+                <p className="text-xs text-white/70">
+                  To get access code fill in the form and press enter.{" "}
+                  <span className="text-amber-300">
+                    <span className="font-bold">Note:</span> An email will be
+                    sent to you with your referral link as well.
+                  </span>
+                </p>
+              </div>
+            </div>
           </div>
           {!generatedUuid && (
             <div>

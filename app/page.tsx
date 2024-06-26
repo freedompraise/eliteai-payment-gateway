@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <main className="h-[100vh] overflow-hidden text-white w-[100vw] bg-black relative">
       <Navbar />
-      <div className="relative h-[calc(100vh-8rem)] overflow-y-scroll">
+      <div className="relative h-[calc(100vh-8rem)] overflow-y-scroll mt-[15%] md:mt-0">
         <div className="w-full h-max bg-transparent relative z-20">
           <div className="relative p-10 h-max md:max-w-3xl space-y-16  md:-translate-y-0 md:top-0 md:left-[50%] md:-translate-x-[50%] z-20">
             <div className="">
