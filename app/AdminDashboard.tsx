@@ -124,7 +124,7 @@ export default function AdminDashboard({
           {(!isLoading && !data) ||
             (!isLoading && data.length == 0 && (
               <div className="w-3xl max-w-3xl border border-white/60 overflow-clip rounded !text-sm">
-                <h4 className="text-sm">No one has made referrals yet</h4>
+                <h4 className="text-sm p-4">No one has made referrals yet</h4>
               </div>
             ))}
         </div>

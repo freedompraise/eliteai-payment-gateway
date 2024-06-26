@@ -108,7 +108,7 @@ export default function Dashboard() {
         {(!isLoading && !data) ||
           (!isLoading && data.length == 0 && (
             <div className="w-3xl max-w-3xl border border-white/60 overflow-clip rounded !text-sm">
-              <h4 className="text-sm">
+              <h4 className="text-sm p-4">
                 No one has used your referral link yet
               </h4>
             </div>
