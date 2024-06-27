@@ -59,7 +59,7 @@ export default function Dashboard() {
           return;
         }
         const rowData: string[][] = await response.json();
-        console.log("row data: ", rowData);
+
         const formattedData = rowData.map((item: string[]) => ({
           full_name: item[1],
           program: item[6],
