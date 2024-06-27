@@ -58,7 +58,7 @@ export default function GenerateRefCode() {
       const result = await response.json();
       setGeneratedUuid(uuid);
       toast.success("Referral link generated successfully");
-      toast.success("An email with your referral link have been sent to you");
+      toast.success("An email with your referral link has been sent to you");
       reset();
     } catch (error) {
       console.error("Error:", error);
@@ -101,7 +101,7 @@ export default function GenerateRefCode() {
           {!generatedUuid && (
             <div>
               <form
-                className="grid grid-cols-1 md:grid-cols-3 border justify-between border-accent rounded-sm"
+                className="grid grid-cols-1 border justify-between border-accent rounded-sm"
                 onSubmit={handleSubmit(onSubmit)}
               >
                 <input
@@ -113,7 +113,7 @@ export default function GenerateRefCode() {
                 <input
                   type="text"
                   placeholder="Enter your email"
-                  className="text-sm outline-none px-2 py-4 border border-t md:border-t-0 md:border-l border-accent bg-transparent text-white"
+                  className="text-sm outline-none px-2 py-4 border border-t border-accent bg-transparent text-white"
                   {...register("email")}
                 />
                 <button

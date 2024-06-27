@@ -6,6 +6,10 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   const { values, mail } = await request.json();
 
+  const BASE_URL = `${request.url.split("/")[0]}//${request.url.split("/")[2]}`;
+
+  console.log("host", request.url.split("/")[2]);
+
   const MAIL_STRING = `Dear ${mail.name},
 
   We are excited to have you as part of our Elite AI community. As an ambassador, you have the unique opportunity to share the benefits of our ELITE GLOBAL AI FREE TRAINING + INTERNSHIP PROGRAM services with your friends and family. By referring them, you help us grow our community and empower more people with AI knowledge.
@@ -40,21 +44,18 @@ export async function POST(request: Request) {
   });
 
   try {
-    const emailResponse = await fetch(
-      `${process.env.BASE_URL}/api/send-email`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: mail.email,
-          subject: "Your Elite AI Referral Link Is Here 🎉🎊",
-          text: MAIL_STRING,
-          html: getEmailTemplate(mail.name, mail.ref), // Optionally, you can include HTML content
-        }),
-      }
-    );
+    const emailResponse = await fetch(`${BASE_URL}/api/send-email`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: mail.email,
+        subject: "Your Elite AI Referral Link Is Here 🎉🎊",
+        text: MAIL_STRING,
+        html: getEmailTemplate(mail.name, mail.ref), // Optionally, you can include HTML content
+      }),
+    });
 
     console.log("email response: ", emailResponse);
 
