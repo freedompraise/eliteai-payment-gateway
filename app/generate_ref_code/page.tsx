@@ -92,7 +92,8 @@ export default function GenerateRefCode() {
                   To get access code fill in the form and press enter.{" "}
                   <span className="text-amber-300">
                     <span className="font-bold">Note:</span> An email will be
-                    sent to you with your referral link as well.
+                    sent to you with your referral link as well. If you don't
+                    see on check your spam folder.
                   </span>
                 </p>
               </div>

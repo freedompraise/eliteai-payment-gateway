@@ -26,11 +26,7 @@ export default function RootLayout({
       <body className={k2d.className}>
         <Suspense>
           {children}
-          <ToastContainer
-            position="bottom-center"
-            theme="dark"
-            hideProgressBar
-          />
+          <ToastContainer position="top-center" theme="dark" hideProgressBar />
         </Suspense>
       </body>
     </html>
