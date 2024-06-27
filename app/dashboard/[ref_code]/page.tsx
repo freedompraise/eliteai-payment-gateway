@@ -56,8 +56,10 @@ export default function Dashboard() {
         if (!response.ok) {
           setIsLoading(false);
           toast.error("Can't retrieve data at the moment");
+          return;
         }
         const rowData: string[][] = await response.json();
+        console.log("row data: ", rowData);
         const formattedData = rowData.map((item: string[]) => ({
           full_name: item[1],
           program: item[6],

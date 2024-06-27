@@ -29,6 +29,7 @@ export async function GET(
   });
 
   try {
+    console.log("in here`");
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SHEET_ID || "",
       range: "Sheet2!A:C",
@@ -47,7 +48,10 @@ export async function GET(
     const referrals = JSON.parse(row[2] || "[]");
 
     if (!Array.isArray(referrals) || referrals.length === 0) {
-      return NextResponse.json({ data: row, referrals: [] });
+      return NextResponse.json(
+        { error: "No user referrals data found" },
+        { status: 404 }
+      );
     }
 
     const getUsersResponse = await sheets.spreadsheets.values.get({
@@ -67,6 +71,8 @@ export async function GET(
     // const data = [];
 
     const data = userData?.filter((user) => referrals.includes(user[0]));
+
+    console.log("data: ", data);
 
     return NextResponse.json(data);
   } catch (error) {
