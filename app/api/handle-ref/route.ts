@@ -40,18 +40,21 @@ export async function POST(request: Request) {
   });
 
   try {
-    const emailResponse = await fetch("http://localhost:3000/api/send-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        to: mail.email,
-        subject: "Your Elite AI Referral Link Is Here 🎉🎊",
-        text: MAIL_STRING,
-        html: getEmailTemplate(mail.name, mail.ref), // Optionally, you can include HTML content
-      }),
-    });
+    const emailResponse = await fetch(
+      `${process.env.BASE_URL}/api/send-email`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: mail.email,
+          subject: "Your Elite AI Referral Link Is Here 🎉🎊",
+          text: MAIL_STRING,
+          html: getEmailTemplate(mail.name, mail.ref), // Optionally, you can include HTML content
+        }),
+      }
+    );
 
     console.log("email response: ", emailResponse);
 
