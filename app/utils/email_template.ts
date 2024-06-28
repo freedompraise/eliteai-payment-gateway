@@ -1,5 +1,4 @@
 export default function getEmailTemplate(username: string, ref: string) {
-  const ref_code = ref.split("=")[1];
   return `<!DOCTYPE html>
   <html lang="en">
   <head>
@@ -79,9 +78,6 @@ export default function getEmailTemplate(username: string, ref: string) {
               <a href="${ref}" class="referral-link">
                   ${ref}
               </a>
-               <p>
-                  <b>Your ref code is:</b> ${ref_code}
-              </p>
               <p>
                   Share this link with anyone interested in participating in the ELITE GLOBAL AI FREE TRAINING + INTERNSHIP PROGRAM.
               </p>

@@ -15,7 +15,8 @@ export default function Navbar() {
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && referralCode.trim() !== "") {
-      router.push(`/dashboard/${referralCode}`);
+      const ref = referralCode.split("=")[1].trim();
+      router.push(`/dashboard/${ref}`);
     }
   };
 
@@ -68,10 +69,7 @@ export default function Navbar() {
               <div>
                 <h1 className="text-lg font-medium">Access Dashboard</h1>
                 <p className="text-xs text-white/70">
-                  To access dashboard enter your referral code and press enter.{" "}
-                  <span className="text-amber-300">
-                    <b>Note:</b> Your ref code is indicated in your email
-                  </span>
+                  To access dashboard enter your referral link and press enter.
                 </p>
               </div>
             </div>
