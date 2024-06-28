@@ -68,7 +68,10 @@ export default function Navbar() {
               <div>
                 <h1 className="text-lg font-medium">Access Dashboard</h1>
                 <p className="text-xs text-white/70">
-                  To access dashboard enter your referral code and press enter
+                  To access dashboard enter your referral code and press enter.{" "}
+                  <span className="text-amber-300">
+                    <b>Note:</b> Your ref code is indicated in your email
+                  </span>
                 </p>
               </div>
             </div>
