@@ -139,7 +139,7 @@ export default function AdminDashboard({
                         {item.referrals}
                         {item.referrals && (
                           <span className="text-white/60 text-xs">
-                            {" " + "(" + item.referrals.length + ")"}
+                            {" " + "(" + item.referrals.split(",").length + ")"}
                           </span>
                         )}
                       </div>
