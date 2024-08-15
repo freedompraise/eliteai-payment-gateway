@@ -392,7 +392,7 @@ export default function LandingForm({ setShowForm }: Params) {
               className="p-2 border rounded-sm border-accent text-white w-full hover:animate-pulse"
               onClick={() => {
                 window.open(
-                  "https://chat.whatsapp.com/DHjnj9pL6P5BB4Y1rKMyki",
+                  "https://chat.whatsapp.com/HLcIfQVfjPm73tSPFrLfM3",
                   "_blank"
                 );
                 setIsCommunityJoined(true);
