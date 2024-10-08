@@ -74,6 +74,7 @@ export default function LandingForm({ setShowForm }: Params) {
     });
 
     if (response.ok) {
+      await sendWelcomeEmail(formData.fullName, formData.email);
       toast.success("Form submitted successfully");
       setIsSubmitting(false);
       reset();
@@ -81,6 +82,29 @@ export default function LandingForm({ setShowForm }: Params) {
     } else {
       setIsSubmitting(false);
       toast.error("Sorry we couldn't submit your data at this time.");
+    }
+  };
+
+  const sendWelcomeEmail = async (fullName: string, email: string) => {
+    const response = await fetch("/api/send-welcome-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        mail: {
+          name: fullName,
+          email: email,
+        },
+      }),
+    });
+
+    if (response.ok) {
+      return toast.success("Welcome");
+    }
+
+    if (!response.ok) {
+      return toast.error("Failed to generate referral link at this time");
     }
   };
 
