@@ -9,18 +9,18 @@ export async function POST(request: Request) {
   console.log("host", request.url.split("/")[2]);
 
   const MAIL_STRING = `Hello ${mail.name},
-
+  
   Thank you for applying for the Elite Global AI Free Training Program. We are excited to have you on board as you embark on this journey to enhance your AI skills and expand your professional network.
+  
+  To get access to our Externship platform, you're required to pay $10 instead of $15 onboarding fee. This discount is only applicable to those that take the training.
+  
+  Join our Global Workforce by taking the Externship program aimed at building your professional experience and portfolio.
   
   Please keep an eye on your inbox, as we will be sending important updates and further information about the training schedule, program materials and other relevant details soon.
   
   If you have any questions, feel free to reach out to us.
   
   We look forward to seeing you in the training.
-  
-  Best regards,
-  
-  The Elite AI Team
   
   `;
 

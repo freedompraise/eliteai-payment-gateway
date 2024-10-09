@@ -1,6 +1,6 @@
 export default function welcomeEmailTemplate(name: string) {
   return `
-    <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -38,6 +38,9 @@ export default function welcomeEmailTemplate(name: string) {
             line-height: 1.6;
             color: #555555;
         }
+        .email-content strong {
+            color: #d9534f;
+        }
         .email-footer {
             margin-top: 30px;
             text-align: center;
@@ -58,6 +61,8 @@ export default function welcomeEmailTemplate(name: string) {
         <div class="email-content">
             <p>Hello ${name},</p>
             <p>Thank you for applying for the <strong>Elite Global AI Free Training Program</strong>. We are excited to have you on board as you embark on this journey to enhance your AI skills and expand your professional network.</p>
+            <p>To get access to our Externship platform, you're required to pay <strong>$10 instead of $15</strong> as an onboarding fee. This discount is only applicable to those who take the training.</p>
+            <p>Join our Global Workforce by taking the Externship program, which is aimed at building your professional experience and portfolio.</p>
             <p>Please keep an eye on your inbox, as we will be sending important updates and further information about the training schedule, program materials, and other relevant details soon.</p>
             <p>If you have any questions, feel free to reach out to us.</p>
             <p>We look forward to seeing you in the training.</p>
@@ -69,5 +74,6 @@ export default function welcomeEmailTemplate(name: string) {
     </div>
 </body>
 </html>
-    `;
+
+  `;
 }
