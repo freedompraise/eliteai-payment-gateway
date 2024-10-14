@@ -134,8 +134,8 @@ export default function AdminDashboard({
                         {item.referrer}
                       </div>
                       <div className="w-1/2 p-3 flex flex-wrap items-center space-x-1">
-                        {item.referrals.map((item) => (
-                          <p>{item.name.trim()},</p>
+                        {item.referrals.map((item, idx) => (
+                          <p key={idx}>{item.name.trim()},</p>
                         ))}
                         {item.referrals && (
                           <span className="text-white/60 text-xs">
