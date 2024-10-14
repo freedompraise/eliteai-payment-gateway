@@ -4,7 +4,6 @@ import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import Navbar from "../Navbar";
 import { BackgroundPattern } from "../BackgroundPattern";
-import LandingForm from "../LandingForm";
 import BackgroundPatternMobile from "../BackgroundPatternMobile";
 import PaidLandingForm from "./PaidLandingForm";
 

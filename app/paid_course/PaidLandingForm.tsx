@@ -183,12 +183,14 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       </p>
 
       <button className="w-full" onClick={(e) => e.preventDefault()}>
-        <PaystackButton
-          className="p-3 w-full mt-10 hover:animate-pulse rounded-sm bg-accent text-white items-center justify-center"
-          {...paystackConfig}
-          disabled={isSubmitting}
-          text={!isSubmitting ? "Enroll Now!!!" : "Enrolling..."}
-        />
+        {typeof window != undefined && (
+          <PaystackButton
+            className="p-3 w-full mt-10 hover:animate-pulse rounded-sm bg-accent text-white items-center justify-center"
+            {...paystackConfig}
+            disabled={isSubmitting}
+            text={!isSubmitting ? "Enroll Now!!!" : "Enrolling..."}
+          />
+        )}
       </button>
     </form>
   );
