@@ -32,6 +32,15 @@ export const landingFormSchema = z.object({
     "Education",
     "Digital marketing and content creation",
     "Data/Business analytics",
+    "AI in Data Analytics",
+    "AI in Business Analytics",
+    "AI in Virtual Assistant",
+    "AI in Education",
+    "AI in Content creation",
+    "AI in Digital Marketing",
+    "AI in IT support",
+    "AI in Community Management",
+    "AI in Program management",
   ]),
 });
 export const paidLandingFormSchema = z.object({

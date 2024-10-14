@@ -175,6 +175,27 @@ export default function LandingForm({ setShowForm }: Params) {
               <option value="Data/Business analytics">
                 Data/Business analytics
               </option>
+              <option value="AI in Data Analytics">AI in Data Analytics</option>
+              <option value="AI in Business Analytics">
+                AI in Business Analytics
+              </option>
+              <option value="AI in Virtual Assistant">
+                AI in Virtual Assistant
+              </option>
+              <option value="AI in Education">AI in Education</option>
+              <option value="AI in Content creation">
+                AI in Content creation
+              </option>
+              <option value="AI in Digital Marketing">
+                AI in Digital Marketing
+              </option>
+              <option value="AI in IT support">AI in IT support</option>
+              <option value="AI in Community Management">
+                AI in Community Management
+              </option>
+              <option value="AI in Program management">
+                AI in Program management
+              </option>
             </select>
           </div>
           <div className="border p-2 w-full space-y-1 flex flex-col border-accent">
