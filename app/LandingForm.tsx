@@ -42,6 +42,7 @@ export default function LandingForm({ setShowForm }: Params) {
 
   const onSubmit = async (formData: LandingFormInputs) => {
     const currentDate = new Date();
+    const ref_id = uuidv4().toString();
     setIsSubmitting(true);
     if (!isCommunityJoined)
       toast.info("Do make sure you have joined the community.");
@@ -62,7 +63,6 @@ export default function LandingForm({ setShowForm }: Params) {
       formData.facebookUsername,
       formData.instagramUsername,
       format(currentDate, "MMMM d, yyyy"),
-      // isCommunityJoined ? "Joined" : "Not Joined",
     ];
 
     const response = await fetch("/api/update-sheet", {
@@ -74,7 +74,7 @@ export default function LandingForm({ setShowForm }: Params) {
     });
 
     if (response.ok) {
-      await sendWelcomeEmail(formData.fullName, formData.email);
+      await sendWelcomeEmail(formData.fullName, formData.email, ref_id);
       toast.success("Form submitted successfully");
       setIsSubmitting(false);
       reset();
@@ -85,16 +85,23 @@ export default function LandingForm({ setShowForm }: Params) {
     }
   };
 
-  const sendWelcomeEmail = async (fullName: string, email: string) => {
-    const response = await fetch("/api/send-welcome-email", {
+  const sendWelcomeEmail = async (
+    fullName: string,
+    email: string,
+    uuid: string
+  ) => {
+    const values = [uuid, fullName, JSON.stringify([])];
+    const response = await fetch("/api/handle-ref", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        values,
         mail: {
           name: fullName,
           email: email,
+          ref: `https://eliteai.vercel.app/?ref=${uuid}`,
         },
       }),
     });

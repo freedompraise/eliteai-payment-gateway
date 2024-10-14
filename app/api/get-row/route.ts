@@ -52,16 +52,21 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const data: { name: string; referrals: string[] }[] = [];
+    const data: {
+      referrer: string;
+      referrals: Array<{ name: string; date: string }>;
+    }[] = [];
 
     rows.slice(1).forEach((row) => {
       const users = userData.filter(
         (user) => row[2] && row[2].includes(user[0])
       );
-      const users_obj: string[] = [];
-      users.forEach((user) => users_obj.push(user[1]));
+      const users_obj: Array<{ name: string; date: string }> = [];
+      users.forEach((user) =>
+        users_obj.push({ name: user[1], date: user[13] })
+      );
       data.push({
-        name: row[1],
+        referrer: row[1],
         referrals: users_obj,
       });
     });

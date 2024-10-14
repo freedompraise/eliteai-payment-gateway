@@ -34,3 +34,14 @@ export const landingFormSchema = z.object({
     "Data/Business analytics",
   ]),
 });
+export const paidLandingFormSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  fullName: z
+    .string()
+    .min(2, { message: "Full name must be at least 2 characters long" }),
+  programs: z.enum([
+    "Education",
+    "Digital marketing and content creation",
+    "Data/Business analytics",
+  ]),
+});

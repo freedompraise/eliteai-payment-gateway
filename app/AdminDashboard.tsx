@@ -1,12 +1,10 @@
 "use client";
 import { CompactTable } from "@table-library/react-table-library/compact";
 
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useTheme } from "@table-library/react-table-library/theme";
-import { getTheme } from "@table-library/react-table-library/baseline";
 import { toast } from "react-toastify";
 import { ChevronLeft } from "lucide-react";
+import { parse, isSameDay, format } from "date-fns";
 
 interface Params {
   setShowDashboard: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,62 +15,33 @@ export default function AdminDashboard({
   setShowDashboard,
   setAdminCode,
 }: Params) {
-  const [data, setData] = useState<{ full_name: string; referrals: string }[]>(
-    []
-  );
-  const [isLoading, setIsLoading] = useState(true);
-
-  const theme = useTheme([
-    getTheme(),
+  const [data, setData] = useState<
     {
-      HeaderRow: `
-        background-color: rgb(255 255 255 / 0.05);
-        color: rgb(255 255 255 / 0.7);
-        font-size: 0.875rem !important;
-        line-height: 1.25rem !important;
-        
-        .th {
-            border-bottom: 1px solid rgb(255 255 255 / 0.5);
-          }
-      `,
-      Row: `
-       color: #fff;
-       background-color: black;
-       font-size: 0.875rem !important;
-        line-height: 1.25rem !important;
-        &:hover {
-            background-color: transparent;
-            color: white;
-        }
-        &:not(:last-of-type) .td {
-            border-bottom: 1px solid #a0a8ae;
-          }
-      `,
-      BaseCell: `
-        &:not(:last-of-type) {
-          border-right: 1px solid #a0a8ae;
-        }
-      `,
-    },
-  ]);
+      referrer: string;
+      referrals: Array<{ name: string; date: string }>;
+    }[]
+  >([]);
+  const [program, setProgram] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [filterDate, setFilterDate] = useState("");
+
+  useEffect(() => {
+    setData([]);
+  }, [program]);
 
   useEffect(() => {
     async function getRows() {
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/get-row`);
+        const response = await fetch(
+          `/api/${program == 0 ? "get-row" : "get-rows-paid"}`
+        );
         if (!response.ok) {
           setIsLoading(false);
           toast.error("Can't retrieve data at the moment");
         }
         const rowData = await response.json();
-        const formattedData = rowData.map(
-          (item: { name: string; referrals: string[] }) => ({
-            full_name: item.name,
-            referrals: item.referrals.join(", "),
-          })
-        );
-        setData(formattedData);
+        setData(rowData);
         setIsLoading(false);
         // return formattedData;
       } catch (error) {
@@ -80,16 +49,24 @@ export default function AdminDashboard({
       }
     }
 
-    if (data.length == 0) {
-      getRows();
-    }
-  }, [data]);
+    getRows();
+  }, [program]);
 
-  const COLUMNS = [
-    { label: "full_name", renderCell: (item: any) => item.full_name },
-    { label: "referrals", renderCell: (item: any) => item.referrals },
-  ];
-  console.log(data);
+  const formattedFilterDate = parse(filterDate, "dd/MM/yyyy", new Date());
+  const filteredData = filterDate
+    ? data
+        .map((item) => ({
+          ...item,
+          referrals: item.referrals.filter((referral) =>
+            isSameDay(
+              formattedFilterDate,
+              parse(referral.date, "MMMM d, yyyy", new Date())
+            )
+          ),
+        }))
+        .filter((item) => item.referrals.length > 0)
+    : data;
+  // console.log(data);
 
   return (
     <div className="h-screen w-screen fixed overflow-auto top-0 right-0 bg-black z-40">
@@ -107,14 +84,35 @@ export default function AdminDashboard({
             <h1 className="text-xl font-semibold text-white/70">Dashboard</h1>
           </div>
           <div className="p-4 bg-white/5 rounded border border-accent/10">
-            <div className="pb-4">
-              <h2 className="">Referrals</h2>
+            <div className="pb-4 flex justify-between items-center gap-4">
+              <h2>Referrals</h2>
+              <div className="space-x-4">
+                <input
+                  type="text"
+                  placeholder="Enter date (dd/mm/yyyy)"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                  className="bg-transparent text-sm text-accent outline-none border border-accent/30 px-2 py-1 rounded"
+                />
+                <select
+                  id="programs"
+                  defaultValue={"0"}
+                  value={program}
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                    setProgram(+e.target.value);
+                  }}
+                  className="bg-transparent text-sm text-accent outline-none border-none"
+                >
+                  <option value="0">Free Training Program</option>
+                  <option value="1">Externship Program</option>
+                </select>
+              </div>
             </div>
 
             {isLoading && (
               <h3 className="text-sm text-white/40">Loading data...</h3>
             )}
-            {!isLoading && data && data.length > 0 && (
+            {!isLoading && filteredData && filteredData.length > 0 && (
               <div className="w-full border border-white/60 overflow-clip rounded !text-sm">
                 {/* <CompactTable
                   columns={COLUMNS}
@@ -129,17 +127,19 @@ export default function AdminDashboard({
                   <div className="w-1/2 p-3">Referrals</div>
                 </div>
 
-                {data &&
-                  data.map((item, idx) => (
+                {filteredData &&
+                  filteredData.map((item, idx) => (
                     <div className="flex border-b border-b-white/60" key={idx}>
                       <div className="w-1/2 border-r border-r-white/60 p-3">
-                        {item.full_name}
+                        {item.referrer}
                       </div>
-                      <div className="w-1/2 p-3">
-                        {item.referrals}
+                      <div className="w-1/2 p-3 flex flex-wrap items-center space-x-1">
+                        {item.referrals.map((item) => (
+                          <p>{item.name.trim()},</p>
+                        ))}
                         {item.referrals && (
                           <span className="text-white/60 text-xs">
-                            {" " + "(" + item.referrals.split(",").length + ")"}
+                            {" " + "(" + item.referrals.length + ")"}
                           </span>
                         )}
                       </div>
@@ -147,10 +147,19 @@ export default function AdminDashboard({
                   ))}
               </div>
             )}
-            {(!isLoading && !data) ||
-              (!isLoading && data.length == 0 && (
+            {(!isLoading && !filteredData) ||
+              (!isLoading && filteredData.length == 0 && (
                 <div className="w-3xl max-w-3xl border border-white/60 overflow-clip rounded !text-sm">
-                  <h4 className="text-sm p-4">No one has made referrals yet</h4>
+                  {filterDate && (
+                    <h4 className="text-sm p-4">
+                      No referral was made on this date.
+                    </h4>
+                  )}
+                  {!filterDate && (
+                    <h4 className="text-sm p-4">
+                      No one has made referrals yet
+                    </h4>
+                  )}
                 </div>
               ))}
           </div>

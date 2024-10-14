@@ -1,11 +1,13 @@
 "use client";
 import { CompactTable } from "@table-library/react-table-library/compact";
-
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTheme } from "@table-library/react-table-library/theme";
 import { getTheme } from "@table-library/react-table-library/baseline";
 import { toast } from "react-toastify";
+import { format, parse, isSameDay } from "date-fns"; // Import date-fns functions
+import { ChevronLeft } from "lucide-react";
+import Link from "next/link";
 
 export default function Dashboard() {
   const [data, setData] = useState<
@@ -13,6 +15,8 @@ export default function Dashboard() {
   >([]);
   const { ref_code } = useParams<{ ref_code: string }>();
   const [isLoading, setIsLoading] = useState(true);
+  const [program, setProgram] = useState(0);
+  const [filterDate, setFilterDate] = useState("");
 
   const theme = useTheme([
     getTheme(),
@@ -49,10 +53,16 @@ export default function Dashboard() {
   ]);
 
   useEffect(() => {
+    setData([]);
+  }, [program]);
+
+  useEffect(() => {
     async function getRowById() {
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/get-row/${ref_code}`);
+        const response = await fetch(
+          `/api/${program == 0 ? "get-row" : "get-rows-paid"}/${ref_code}`
+        );
         if (!response.ok) {
           setIsLoading(false);
           toast.error("Can't retrieve data at the moment");
@@ -62,59 +72,109 @@ export default function Dashboard() {
 
         const formattedData = rowData.map((item: string[]) => ({
           full_name: item[1],
-          program: item[6],
-          registration_date: item[12],
+          program: program == 0 ? item[6] : item[3],
+          registration_date: program == 0 ? item[13] : item[4],
         }));
         setData(formattedData);
         setIsLoading(false);
         return formattedData;
       } catch (error) {
+        setIsLoading(false);
         console.error("Error fetching row:", error);
+        toast.error("Failed to fetch data");
       }
     }
 
-    if (data.length == 0) {
-      getRowById();
-    }
-  }, [data]);
+    getRowById();
+  }, [program, ref_code]);
+
+  // Filter data based on the selected date
+  const filteredData = filterDate
+    ? data.filter((item) => {
+        const itemDate = parse(
+          item.registration_date,
+          "MMMM d, yyyy",
+          new Date()
+        );
+        const inputDate = parse(filterDate, "dd/MM/yyyy", new Date());
+        return isSameDay(itemDate, inputDate);
+      })
+    : data;
 
   const COLUMNS = [
-    { label: "full_name", renderCell: (item: any) => item.full_name },
-    { label: "program", renderCell: (item: any) => item.program },
+    { label: "Full Name", renderCell: (item: any) => item.full_name },
+    { label: "Program", renderCell: (item: any) => item.program },
     {
-      label: "registration_date",
+      label: "Registration Date",
       renderCell: (item: any) => item.registration_date,
     },
   ];
 
   return (
-    <div className=" min-h-[100vh] text-white py-10 bg-black px-4 md:px-[80px]">
-      <h1 className="text-xl pb-10 font-semibold text-white/70">Dashboard</h1>
+    <div className="min-h-[100vh] text-white py-10 bg-black px-4 md:px-[80px]">
+      <div className="flex space-x-2 pb-10 items-center">
+        <Link href={"/"}>
+          <button>
+            <ChevronLeft />
+          </button>
+        </Link>
+        <h1 className="text-xl font-semibold text-white/70">Dashboard</h1>
+      </div>
       <div className="p-4 bg-white/5 rounded border border-accent/10">
-        <div className="pb-4">
-          <h2 className="">Referrals</h2>
+        <div className="pb-4 flex justify-between items-center gap-4">
+          <h2>Referrals</h2>
+          <div className="space-x-4">
+            <input
+              type="text"
+              placeholder="Enter date (dd/mm/yyyy)"
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+              className="bg-transparent text-sm text-accent outline-none border border-accent/30 px-2 py-1 rounded"
+            />
+            <select
+              id="programs"
+              defaultValue={"0"}
+              value={program}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                setProgram(+e.target.value);
+              }}
+              className="bg-transparent text-sm text-accent outline-none border-none"
+            >
+              <option value="0">Free Training Program</option>
+              <option value="1">Externship Program</option>
+            </select>
+          </div>
         </div>
 
         {isLoading && (
           <h3 className="text-sm text-white/40">Loading data...</h3>
         )}
-        {!isLoading && data && data.length > 0 && (
+
+        {!isLoading && filteredData.length > 0 && (
           <div className="w-full border border-white/60 overflow-clip rounded !text-sm">
             <CompactTable
               columns={COLUMNS}
-              data={{ nodes: data }}
+              data={{ nodes: filteredData }}
               theme={theme}
             />
           </div>
         )}
-        {(!isLoading && !data) ||
-          (!isLoading && data.length == 0 && (
-            <div className="w-3xl max-w-3xl border border-white/60 overflow-clip rounded !text-sm">
+
+        {!isLoading && filteredData.length === 0 && (
+          <div className="w-full border border-white/60 overflow-clip rounded !text-sm">
+            {filterDate && (
               <h4 className="text-sm p-4">
-                No one has used your referral link yet
+                No referral was made with your link on this date.
               </h4>
-            </div>
-          ))}
+            )}
+            {!filterDate && (
+              <h4 className="text-sm p-4">
+                No one has used your referral link yet or no data for selected
+                date.
+              </h4>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

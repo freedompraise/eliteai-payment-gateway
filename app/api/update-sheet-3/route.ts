@@ -1,14 +1,9 @@
 // app/api/update-sheet/route.ts
-import getEmailTemplate from "@/app/utils/email_template";
 import { google, sheets_v4 } from "googleapis";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const { values, mail } = await request.json();
-
-  const BASE_URL = `${request.url.split("/")[0]}//${request.url.split("/")[2]}`;
-
-  console.log("host", request.url.split("/")[2]);
+  const { values, ref } = await request.json();
 
   const keyFileBase64 = process.env.GOOGLE_APP_CRED || "";
   const keyFileBuffer = Buffer.from(keyFileBase64, "base64");
@@ -26,39 +21,28 @@ export async function POST(request: Request) {
     auth: authClient,
   });
 
+  console.log("values: ", values);
+
   try {
-    const emailResponse = await fetch(`${BASE_URL}/api/send-welcome-email`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        mail: {
-          name: mail.name,
-          email: mail.email,
-          ref: mail.ref,
+    if (ref) {
+      const response = await sheets.spreadsheets.values.append({
+        spreadsheetId: process.env.SHEET_ID || "",
+        valueInputOption: "RAW",
+        range: "Sheet3!A:F",
+        requestBody: {
+          values: [[...values, ref]],
         },
-      }),
-    });
-
-    console.log("email response: ", emailResponse);
-
-    if (!emailResponse.ok) {
-      return NextResponse.json(
-        { error: "Could not send email" },
-        { status: 500 }
-      );
+      });
+      return NextResponse.json(response.data);
     }
-
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: process.env.SHEET_ID || "",
       valueInputOption: "RAW",
-      range: "Sheet2!A:C",
+      range: "Sheet3!A:E",
       requestBody: {
         values: [values],
       },
     });
-
     return NextResponse.json(response.data);
   } catch (error) {
     console.error("Error updating sheet:", error);

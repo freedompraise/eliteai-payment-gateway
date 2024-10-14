@@ -4,6 +4,7 @@ import { useState } from "react";
 import AdminDashboard from "./AdminDashboard";
 import { toast } from "react-toastify";
 import crypto from "crypto";
+import Link from "next/link";
 
 export default function Navbar() {
   const [referralCode, setReferralCode] = useState("");
@@ -40,13 +41,20 @@ export default function Navbar() {
   return (
     <div className="h-24 md:h-32 relative">
       <nav className="w-full flex px-10 md:px-[80px] py-6 md:py-10 fixed top-0 right-0 bg-black/50 justify-between items-center z-40">
-        <div className="h-8 w-8 md:h-10 md:w-10 relative">
-          <img src="/logo.png" className="h-full w-full absolute" />
-        </div>
+        <Link href={"/"}>
+          <div className="h-8 w-8 md:h-10 md:w-10 relative">
+            <img src="/logo.png" className="h-full w-full absolute" />
+          </div>
+        </Link>
         <div className="flex space-x-3">
+          <Link href={"/paid_course"}>
+            <button className="py-2 px-4 md:px-6 md:py-2 rounded-sm bg-accent text-white font-semibold">
+              Upgrade Training
+            </button>
+          </Link>
           <button
             onClick={() => setShowDashboardPopup(true)}
-            className="py-2 px-4 md:px-6 md:py-2 rounded-sm bg-accent text-white font-semibold"
+            className="py-2 px-4 md:px-6 md:py-2 rounded-sm border border-accent text-white font-semibold"
           >
             Dashboard
           </button>
