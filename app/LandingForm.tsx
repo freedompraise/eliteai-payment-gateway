@@ -165,16 +165,9 @@ export default function LandingForm({ setShowForm }: Params) {
             <select
               id="programs"
               {...register("programs")}
-              defaultValue={"Education"}
+              defaultValue={"AI in Data Analytics"}
               className="bg-transparent text-sm outline-none border-none"
             >
-              <option value="Education">Education</option>
-              <option value="Digital marketing and content creation">
-                Digital marketing and content creation
-              </option>
-              <option value="Data/Business analytics">
-                Data/Business analytics
-              </option>
               <option value="AI in Data Analytics">AI in Data Analytics</option>
               <option value="AI in Business Analytics">
                 AI in Business Analytics

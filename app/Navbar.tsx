@@ -1,5 +1,5 @@
 import { ChevronLeft, Lock } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import AdminDashboard from "./AdminDashboard";
 import { toast } from "react-toastify";
@@ -13,6 +13,7 @@ export default function Navbar() {
   const [showAdminDashboardPopup, setShowAdminDashboardPopup] = useState(false);
   const [showAdminDashboard, setShowAdminDashboard] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && referralCode.trim() !== "") {
@@ -46,24 +47,49 @@ export default function Navbar() {
             <img src="/logo.png" className="h-full w-full absolute" />
           </div>
         </Link>
-        <div className="flex space-x-3 items-center">
-          <Link href={"/paid_course"}>
-            <button className="py-2 px-4 rounded-sm text-nowrap bg-accent text-white font-semibold text-sm md:text-base">
-              Upgrade Training
+        <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 items-center">
+          <div className="flex space-x-3 items-center">
+            <Link href={"/"}>
+              <button
+                className={`py-2 px-4 rounded-sm text-nowrap font-semibold border border-accent text-sm md:text-base ${
+                  pathname === "/"
+                    ? "bg-accent text-white"
+                    : "bg-transparent text-white"
+                }`}
+              >
+                Free Training
+              </button>
+            </Link>
+            <Link href={"/paid_course"}>
+              <button
+                className={`py-2 px-4 rounded-sm text-nowrap border border-accent font-semibold text-sm md:text-base ${
+                  pathname === "/paid_course"
+                    ? "bg-accent text-white"
+                    : "bg-transparent text-white"
+                }`}
+              >
+                Externship
+              </button>
+            </Link>
+          </div>
+          <div className="flex space-x-3 items-center">
+            <button
+              onClick={() => setShowDashboardPopup(true)}
+              className={`py-2 px-4 rounded-sm border border-accent text-white font-semibold text-sm md:text-base ${
+                pathname.includes("/dashboard")
+                  ? "bg-accent text-white"
+                  : "bg-transparent text-white"
+              }`}
+            >
+              Dashboard
             </button>
-          </Link>
-          <button
-            onClick={() => setShowDashboardPopup(true)}
-            className="py-2 px-4 rounded-sm border border-accent text-white font-semibold text-sm md:text-base"
-          >
-            Dashboard
-          </button>
-          <button
-            onClick={() => setShowAdminDashboardPopup(true)}
-            className="p-2 h-10 w-10 flex items-center justify-center rounded-sm text-accent border border-accent"
-          >
-            <Lock className="h-4 w-4" />
-          </button>
+            <button
+              onClick={() => setShowAdminDashboardPopup(true)}
+              className="p-2 h-10 w-10 flex items-center justify-center rounded-sm text-accent border border-accent"
+            >
+              <Lock className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -87,7 +113,7 @@ export default function Navbar() {
               </div>
               <input
                 type="text"
-                placeholder="Enter your referral code"
+                placeholder="Enter your referral link"
                 className="text-sm outline-none w-full px-2 bg-transparent text-white border-0"
                 value={referralCode}
                 onChange={(e) => setReferralCode(e.target.value)}

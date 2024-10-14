@@ -29,9 +29,6 @@ export const landingFormSchema = z.object({
     .min(3, { message: "Youtube username is required" }),
   linkedinUrl: z.string().min(3, { message: "Linkedin url is required" }),
   programs: z.enum([
-    "Education",
-    "Digital marketing and content creation",
-    "Data/Business analytics",
     "AI in Data Analytics",
     "AI in Business Analytics",
     "AI in Virtual Assistant",
