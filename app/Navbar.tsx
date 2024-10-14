@@ -40,27 +40,27 @@ export default function Navbar() {
 
   return (
     <div className="h-24 md:h-32 relative">
-      <nav className="w-full flex px-10 md:px-[80px] py-6 md:py-10 fixed top-0 right-0 bg-black/50 justify-between items-center z-40">
+      <nav className="w-full flex flex-col space-y-4 md:space-y-0 md:flex-row px-4 py-4 md:px-[80px] md:py-6 fixed top-0 right-0 bg-black/50 justify-between items-center z-40">
         <Link href={"/"}>
           <div className="h-8 w-8 md:h-10 md:w-10 relative">
             <img src="/logo.png" className="h-full w-full absolute" />
           </div>
         </Link>
-        <div className="flex space-x-3">
+        <div className="flex space-x-3 items-center">
           <Link href={"/paid_course"}>
-            <button className="py-2 px-4 md:px-6 md:py-2 rounded-sm bg-accent text-white font-semibold">
+            <button className="py-2 px-4 rounded-sm text-nowrap bg-accent text-white font-semibold text-sm md:text-base">
               Upgrade Training
             </button>
           </Link>
           <button
             onClick={() => setShowDashboardPopup(true)}
-            className="py-2 px-4 md:px-6 md:py-2 rounded-sm border border-accent text-white font-semibold"
+            className="py-2 px-4 rounded-sm border border-accent text-white font-semibold text-sm md:text-base"
           >
             Dashboard
           </button>
           <button
             onClick={() => setShowAdminDashboardPopup(true)}
-            className="md:p-3 h-10 flex items-center justify-center aspect-square rounded-sm text-accent border border-accent"
+            className="p-2 h-10 w-10 flex items-center justify-center rounded-sm text-accent border border-accent"
           >
             <Lock className="h-4 w-4" />
           </button>
