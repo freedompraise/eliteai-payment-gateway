@@ -1,10 +1,17 @@
 import { useState } from "react";
-import { PaystackButton } from "react-paystack";
 import { X } from "lucide-react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const PaystackButton = dynamic(
+  () => import("react-paystack").then((mod) => mod.PaystackButton),
+  {
+    ssr: false,
+  }
+);
 
 // Remove useForm and zod
 // Remove zod inference for LandingFormInputs
