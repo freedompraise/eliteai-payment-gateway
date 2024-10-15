@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
@@ -12,9 +12,6 @@ const PaystackButton = dynamic(
     ssr: false,
   }
 );
-
-// Remove useForm and zod
-// Remove zod inference for LandingFormInputs
 
 interface Params {
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,9 +28,37 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     programs: "Data Analytics Externship", // default program value
   });
   const [errors, setErrors] = useState({ email: "", fullName: "" });
+  const [checking, setChecking] = useState(false);
+  const [amount, setAmount] = useState(24000);
+  const [validating, setValidating] = useState(false);
 
-  // Handling input changes
-  const handleInputChange = (
+  useEffect(() => {
+    async function checkDiscount() {
+      setValidating(true);
+      if (formData.email && formData.fullName) {
+        toast.info("Validating...");
+        const response = await fetch(`/api/get-row-by-email/${formData.email}`);
+
+        if (response.ok && response.status !== 404) {
+          setAmount(16000);
+          toast.success("Discount applied successfully");
+        } else {
+          toast.error(
+            "Sorry the email you've provided wasn't registered for our free training"
+          );
+        }
+        setChecking(false);
+        setValidating(false);
+      } else {
+        toast.error("Please make sure each form field is filled properly");
+      }
+    }
+    if (checking) {
+      checkDiscount();
+    }
+  }, [checking, formData]);
+
+  const handleInputChange = async (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
@@ -62,7 +87,6 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     });
 
     if (response.ok) {
-      // await sendWelcomeEmail(formData.fullName, formData.email);
       toast.success("You've been enrolled successfully");
       setIsSubmitting(false);
       setFormData({ email: "", fullName: "", programs: "Education" }); // Reset form
@@ -73,33 +97,10 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     }
   };
 
-  const sendWelcomeEmail = async (fullName: string, email: string) => {
-    const response = await fetch("/api/send-welcome-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        mail: {
-          name: fullName,
-          email: email,
-        },
-      }),
-    });
-
-    if (response.ok) {
-      return toast.success("Welcome");
-    }
-
-    if (!response.ok) {
-      return toast.error("Failed to generate referral link at this time");
-    }
-  };
-
   const paystackConfig = {
     email: formData.email,
-    amount: 10000 * 100, // Example amount in kobo (10,000 NGN)
-    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_TEST_PUBLIC_KEY || "",
+    amount: amount * 100, // Example amount in kobo
+    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY || "",
     onSuccess: handlePaystackSuccess,
     onClose: () => toast.info("Payment process was interrupted"),
   };
@@ -187,18 +188,48 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       <p className="text-xs mt-3 text-gray-100">
         This program is a PAID Externship placement program. Training is open to
         all Africans.{" "}
+        <span className="text-amber-400">
+          NOTE: Discount is only availbable to students who have gone through
+          our free training.
+        </span>
       </p>
 
-      <button className="w-full" onClick={(e) => e.preventDefault()}>
-        {typeof window != undefined && (
+      {/* Buttons for Get discount and Paystack */}
+      <div className="flex flex-col md:flex-row space-x-5">
+        <button
+          className={`p-3 w-full mt-10 rounded-sm border items-center justify-center ${
+            validating
+              ? "bg-gray-400 text-gray-700 border-gray-400 cursor-not-allowed"
+              : "hover:animate-pulse border-accent text-white"
+          }`}
+          onClick={(e) => {
+            e.preventDefault();
+            setChecking(true);
+            console.log(checking);
+          }}
+          disabled={validating}
+        >
+          Get discount
+        </button>
+
+        <button
+          className="w-full"
+          onClick={(e) => {
+            e.preventDefault();
+          }}
+        >
           <PaystackButton
-            className="p-3 w-full mt-10 hover:animate-pulse rounded-sm bg-accent text-white items-center justify-center"
+            className={`p-3 w-full mt-10 rounded-sm items-center justify-center ${
+              isSubmitting || validating
+                ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                : "hover:animate-pulse bg-accent text-white"
+            }`}
             {...paystackConfig}
-            disabled={isSubmitting}
-            text={!isSubmitting ? "Enroll Now!!!" : "Enrolling..."}
+            disabled={isSubmitting || validating}
+            text={!isSubmitting ? `Enroll for N${amount}` : "Processing..."}
           />
-        )}
-      </button>
+        </button>
+      </div>
     </form>
   );
 }
