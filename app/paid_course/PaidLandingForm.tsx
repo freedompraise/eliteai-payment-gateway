@@ -140,7 +140,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
 
   const paystackConfig = {
     email: formData.email,
-    amount: 200 * 100, // Example amount in kobo
+    amount: paystackAmount * 100, // Example amount in kobo
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY || "",
     onSuccess: handlePaymentSuccess,
     onClose: () => toast.info("Payment process was interrupted"),
