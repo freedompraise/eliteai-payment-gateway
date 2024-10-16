@@ -17,6 +17,31 @@ interface Params {
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+let courses = [
+  { code: "8010", course: "Education Externship" },
+  { code: "8009", course: "IT Support Externship" },
+  { code: "7970", course: "Project Management Externship" },
+  {
+    code: "7937",
+    course: "Virtual Assistant Externship – Mastering Remote Support",
+  },
+  { code: "7936", course: "Community Management Externship" },
+  { code: "7935", course: "Business Analysis Externship" },
+  { code: "7934", course: "Data Analysis Externship" },
+  { code: "7915", course: "Content Creation Externship" },
+  { code: "7447", course: "Digital Marketing Externship" },
+];
+
+function truncateText(text: string, maxLength: number) {
+  // If the text is shorter or equal to the max length, return it as is
+  if (text.length <= maxLength) {
+    return text;
+  }
+
+  // Otherwise, truncate and add ellipsis
+  return text.slice(0, maxLength) + "...";
+}
+
 export default function PaidLandingForm({ setShowForm }: Params) {
   const searchParams = useSearchParams();
   const ref = searchParams.get("ref");
@@ -25,7 +50,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
   const [formData, setFormData] = useState({
     email: "",
     fullName: "",
-    programs: "Data Analytics Externship", // default program value
+    programs: courses[0].code, // default program value
   });
   const [errors, setErrors] = useState({ email: "", fullName: "" });
   const [checking, setChecking] = useState(false);
@@ -74,6 +99,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       uuidv4(),
       formData.fullName,
       formData.email,
+      courses.find((course) => course.code == formData.programs)?.course,
       formData.programs,
       format(currentDate, "MMMM d, yyyy"),
     ];
@@ -99,8 +125,8 @@ export default function PaidLandingForm({ setShowForm }: Params) {
 
   const paystackConfig = {
     email: formData.email,
-    amount: amount * 100, // Example amount in kobo
-    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY || "",
+    amount: 200 * 100, // Example amount in kobo
+    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_TEST_PUBLIC_KEY || "",
     onSuccess: handlePaystackSuccess,
     onClose: () => toast.info("Payment process was interrupted"),
   };
@@ -150,7 +176,12 @@ export default function PaidLandingForm({ setShowForm }: Params) {
               onChange={handleInputChange}
               className="bg-transparent text-sm outline-none border-none"
             >
-              <option value="Data Analytics Externship">
+              {courses.map((course, idx) => (
+                <option key={idx} value={course.code}>
+                  {truncateText(course.course, 40)}
+                </option>
+              ))}
+              {/* <option value="Data Analytics Externship">
                 Data Analytics Externship
               </option>
               <option value="Business Analytics Externship">
@@ -174,7 +205,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
               </option>
               <option value="Program management Externship">
                 Program management Externship
-              </option>
+              </option> */}
             </select>
           </div>
         </div>
@@ -209,7 +240,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
           }}
           disabled={validating}
         >
-          Get discount
+          {!validating ? "Get discount" : "Validating..."}
         </button>
 
         <button

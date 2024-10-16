@@ -31,7 +31,7 @@ export async function GET() {
     console.log("in here");
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SHEET_ID || "",
-      range: "Sheet3!A:F",
+      range: "Sheet3!A:G",
     });
 
     const rows = response.data.values;
