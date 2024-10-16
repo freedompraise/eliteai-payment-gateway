@@ -93,6 +93,18 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     setFormData({ ...formData, [name]: value });
   };
 
+  function validateFormData() {
+    if (formData.email && formData.fullName) {
+      // Regular expression for validating an email
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+      // Test the email against the regex
+      return emailRegex.test(formData.email) && formData.fullName.length > 8;
+    }
+
+    return false;
+  }
+
   const handlePaymentSuccess = async () => {
     const currentDate = new Date();
     setIsSubmitting(true);
@@ -133,6 +145,8 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     onSuccess: handlePaymentSuccess,
     onClose: () => toast.info("Payment process was interrupted"),
   };
+
+  // console.log(validateFormData() && validating);
 
   return (
     <form className="rounded-sm h-max py-10 md:py-0 pb-20 md:pb-0">
@@ -231,7 +245,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
 
       <button
         className={`p-3 w-full mt-10 rounded-sm border items-center justify-center ${
-          validating
+          validating || !validateFormData()
             ? "bg-gray-400 text-gray-700 border-gray-400 cursor-not-allowed"
             : "hover:animate-pulse border-accent text-white"
         }`}
@@ -240,7 +254,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
           setChecking(true);
           console.log(checking);
         }}
-        disabled={validating}
+        disabled={validating || !validateFormData()}
       >
         {!validating ? "Get discount" : "Validating..."}
       </button>
@@ -249,44 +263,46 @@ export default function PaidLandingForm({ setShowForm }: Params) {
         through our free training.
       </p>
       {/* Buttons for Get discount and Paystack */}
-      <div className="flex flex-col md:flex-row md:space-x-5 space-y-5 md:space-y-0 mt-8">
-        <button
-          className="w-full flex items-start"
-          onClick={(e) => {
-            e.preventDefault();
-          }}
-        >
-          <PaystackButton
-            className={`p-3 w-full rounded-sm items-center justify-center ${
-              isSubmitting || validating
-                ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-                : "hover:animate-pulse bg-accent text-white"
-            }`}
-            {...paystackConfig}
-            disabled={isSubmitting || validating}
-            text={!isSubmitting ? `Pay with Paystack` : "Processing..."}
-          />
-        </button>
-
-        <button
-          className="w-full h-[110px] overflow-y-clip"
-          onClick={(e) => {
-            e.preventDefault();
-          }}
-        >
-          <PayPalButton
-            amount={paypalAmount}
-            options={{
-              clientId: process.env.NEXT_PUBLIC_PAYPAL_TEST_CLIENT_ID,
-              currency: "USD",
+      {validateFormData() && (
+        <div className="flex flex-col md:flex-row md:space-x-5 space-y-5 md:space-y-0 mt-8">
+          <button
+            className="w-full flex items-start"
+            onClick={(e) => {
+              e.preventDefault();
             }}
-            onSuccess={handlePaymentSuccess}
-            onError={() =>
-              toast.error("Payment process was not completed at this time.")
-            }
-          />
-        </button>
-      </div>
+          >
+            <PaystackButton
+              className={`p-3 w-full rounded-sm items-center justify-center ${
+                isSubmitting || validating
+                  ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                  : "hover:animate-pulse bg-accent text-white"
+              }`}
+              {...paystackConfig}
+              disabled={isSubmitting || validating}
+              text={!isSubmitting ? `Pay with Paystack` : "Processing..."}
+            />
+          </button>
+
+          <button
+            className="w-full h-[110px] overflow-y-clip"
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <PayPalButton
+              amount={paypalAmount}
+              options={{
+                clientId: process.env.NEXT_PUBLIC_PAYPAL_TEST_CLIENT_ID,
+                currency: "USD",
+              }}
+              onSuccess={handlePaymentSuccess}
+              onError={() =>
+                toast.error("Payment process was not completed at this time.")
+              }
+            />
+          </button>
+        </div>
+      )}
     </form>
   );
 }
