@@ -25,6 +25,7 @@ export async function POST(request: Request) {
 
   try {
     if (ref) {
+      console.log("ref: ", ref);
       const response = await sheets.spreadsheets.values.append({
         spreadsheetId: process.env.SHEET_ID || "",
         valueInputOption: "RAW",
