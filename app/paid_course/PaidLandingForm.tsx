@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { PayPalButton } from "react-paypal-button-v2";
+import externshipEmailTemplate from "../utils/externship_email_template";
 
 const PaystackButton = dynamic(
   () => import("react-paystack").then((mod) => mod.PaystackButton),
@@ -105,13 +106,49 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     return false;
   }
 
+  // utils/sendEmail.ts
+
+  async function sendEmail(
+    to: string,
+    subject: string,
+    text: string,
+    ref: string
+    // html: string
+  ) {
+    let program = courses.find((course) => formData.programs == course.code)
+      ?.course;
+    let html = externshipEmailTemplate(
+      formData.fullName,
+      program ? program : "",
+      `https://eliteai.vercel.app/paid_course?ref=${ref}`,
+      "html"
+    );
+    const response = await fetch("/api/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ to, subject, text, html }),
+    });
+
+    if (!response.ok) {
+      // Handle errors accordingly
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to send email");
+    }
+
+    const data = await response.json();
+    return data;
+  }
+
   const handlePaymentSuccess = async () => {
     const currentDate = new Date();
+    const id = uuidv4();
     setIsSubmitting(true);
     toast.info("Submitting...");
 
     const values = [
-      uuidv4(),
+      id,
       formData.fullName,
       formData.email,
       courses.find((course) => course.code == formData.programs)?.course,
@@ -128,6 +165,20 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     });
 
     if (response.ok) {
+      let program = courses.find((course) => formData.programs == course.code)
+        ?.course;
+      let text = externshipEmailTemplate(
+        formData.fullName,
+        program ? program : "",
+        `https://eliteai.vercel.app/paid_course?ref=${ref}`,
+        "text"
+      );
+      await sendEmail(
+        formData.email,
+        "Congratulations on Your Externship!",
+        text,
+        id
+      );
       toast.success("You've been enrolled successfully");
       setIsSubmitting(false);
       setFormData({ email: "", fullName: "", programs: "Education" }); // Reset form
@@ -141,7 +192,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
   const paystackConfig = {
     email: formData.email,
     amount: paystackAmount * 100, // Example amount in kobo
-    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY || "",
+    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_TEST_PUBLIC_KEY || "",
     onSuccess: handlePaymentSuccess,
     onClose: () => toast.info("Payment process was interrupted"),
   };
@@ -259,7 +310,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
         {!validating ? "Get discount" : "Validating..."}
       </button>
       <p className="text-amber-400 text-xs mt-1">
-        <b>NOTE:</b> Discount is only availbable to students who have gone
+        <b>NOTE:</b> Discount is only available to students who have gone
         through our free training.
       </p>
       {/* Buttons for Get discount and Paystack */}
@@ -292,7 +343,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
             <PayPalButton
               amount={paypalAmount}
               options={{
-                clientId: process.env.NEXT_PUBLIC_PAYPAL_TEST_CLIENT_ID,
+                clientId: process.env.NEXT_PUBLIC_PAYPAL_LIVE_CLIENT_ID,
                 currency: "USD",
               }}
               onSuccess={handlePaymentSuccess}
