@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
+import { PayPalButton } from "react-paypal-button-v2";
 
 const PaystackButton = dynamic(
   () => import("react-paystack").then((mod) => mod.PaystackButton),
@@ -54,7 +55,8 @@ export default function PaidLandingForm({ setShowForm }: Params) {
   });
   const [errors, setErrors] = useState({ email: "", fullName: "" });
   const [checking, setChecking] = useState(false);
-  const [amount, setAmount] = useState(24000);
+  const [paystackAmount, setPaystackAmount] = useState(24000);
+  const [paypalAmount, setPaypalAmount] = useState(15);
   const [validating, setValidating] = useState(false);
 
   useEffect(() => {
@@ -65,7 +67,8 @@ export default function PaidLandingForm({ setShowForm }: Params) {
         const response = await fetch(`/api/get-row-by-email/${formData.email}`);
 
         if (response.ok && response.status !== 404) {
-          setAmount(16000);
+          setPaystackAmount(16000);
+          setPaypalAmount(10);
           toast.success("Discount applied successfully");
         } else {
           toast.error(
@@ -90,7 +93,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handlePaystackSuccess = async () => {
+  const handlePaymentSuccess = async () => {
     const currentDate = new Date();
     setIsSubmitting(true);
     toast.info("Submitting...");
@@ -127,7 +130,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     email: formData.email,
     amount: 200 * 100, // Example amount in kobo
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY || "",
-    onSuccess: handlePaystackSuccess,
+    onSuccess: handlePaymentSuccess,
     onClose: () => toast.info("Payment process was interrupted"),
   };
 
@@ -219,45 +222,68 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       <p className="text-xs mt-3 text-gray-100">
         This program is a PAID Externship placement program. Training is open to
         all Africans.{" "}
-        <span className="text-amber-400">
-          NOTE: Discount is only availbable to students who have gone through
-          our free training.
-        </span>
       </p>
 
-      {/* Buttons for Get discount and Paystack */}
-      <div className="flex flex-col md:flex-row space-x-5">
-        <button
-          className={`p-3 w-full mt-10 rounded-sm border items-center justify-center ${
-            validating
-              ? "bg-gray-400 text-gray-700 border-gray-400 cursor-not-allowed"
-              : "hover:animate-pulse border-accent text-white"
-          }`}
-          onClick={(e) => {
-            e.preventDefault();
-            setChecking(true);
-            console.log(checking);
-          }}
-          disabled={validating}
-        >
-          {!validating ? "Get discount" : "Validating..."}
-        </button>
+      <p className="text-xl mt-10 font-semibold">
+        <span className="text-sm text-amber-400">Amount Payable:</span>{" "}
+        {`N${paystackAmount}($${paypalAmount})`}
+      </p>
 
+      <button
+        className={`p-3 w-full mt-10 rounded-sm border items-center justify-center ${
+          validating
+            ? "bg-gray-400 text-gray-700 border-gray-400 cursor-not-allowed"
+            : "hover:animate-pulse border-accent text-white"
+        }`}
+        onClick={(e) => {
+          e.preventDefault();
+          setChecking(true);
+          console.log(checking);
+        }}
+        disabled={validating}
+      >
+        {!validating ? "Get discount" : "Validating..."}
+      </button>
+      <p className="text-amber-400 text-xs mt-1">
+        <b>NOTE:</b> Discount is only availbable to students who have gone
+        through our free training.
+      </p>
+      {/* Buttons for Get discount and Paystack */}
+      <div className="flex flex-col md:flex-row md:space-x-5 space-y-5 md:space-y-0 mt-8">
         <button
-          className="w-full"
+          className="w-full flex items-start"
           onClick={(e) => {
             e.preventDefault();
           }}
         >
           <PaystackButton
-            className={`p-3 w-full mt-10 rounded-sm items-center justify-center ${
+            className={`p-3 w-full rounded-sm items-center justify-center ${
               isSubmitting || validating
                 ? "bg-gray-400 text-gray-700 cursor-not-allowed"
                 : "hover:animate-pulse bg-accent text-white"
             }`}
             {...paystackConfig}
             disabled={isSubmitting || validating}
-            text={!isSubmitting ? `Enroll for N${amount}` : "Processing..."}
+            text={!isSubmitting ? `Pay with Paystack` : "Processing..."}
+          />
+        </button>
+
+        <button
+          className="w-full h-[110px] overflow-y-clip"
+          onClick={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <PayPalButton
+            amount={paypalAmount}
+            options={{
+              clientId: process.env.NEXT_PUBLIC_PAYPAL_TEST_CLIENT_ID,
+              currency: "USD",
+            }}
+            onSuccess={handlePaymentSuccess}
+            onError={() =>
+              toast.error("Payment process was not completed at this time.")
+            }
           />
         </button>
       </div>
