@@ -141,7 +141,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     return data;
   }
 
-  const handlePaymentSuccess = async () => {
+  const handlePaymentSuccess = async (platform: string) => {
     const currentDate = new Date();
     const id = uuidv4();
     setIsSubmitting(true);
@@ -154,6 +154,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       courses.find((course) => course.code == formData.programs)?.course,
       formData.programs,
       format(currentDate, "MMMM d, yyyy"),
+      platform,
     ];
 
     const response = await fetch("/api/update-sheet-3", {
@@ -193,7 +194,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     email: formData.email,
     amount: paystackAmount * 100, // Example amount in kobo
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY || "",
-    onSuccess: handlePaymentSuccess,
+    onSuccess: () => handlePaymentSuccess("Paystack"),
     onClose: () => toast.info("Payment process was interrupted"),
   };
 
@@ -303,7 +304,6 @@ export default function PaidLandingForm({ setShowForm }: Params) {
         onClick={(e) => {
           e.preventDefault();
           setChecking(true);
-          console.log(checking);
         }}
         disabled={validating || !validateFormData()}
       >
@@ -334,24 +334,26 @@ export default function PaidLandingForm({ setShowForm }: Params) {
             />
           </button>
 
-          <button
-            className="w-full h-[110px] overflow-y-clip"
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <PayPalButton
-              amount={paypalAmount}
-              options={{
-                clientId: process.env.NEXT_PUBLIC_PAYPAL_LIVE_CLIENT_ID,
-                currency: "USD",
+          {!isSubmitting && (
+            <button
+              className="w-full h-[110px] overflow-y-clip"
+              onClick={(e) => {
+                e.preventDefault();
               }}
-              onSuccess={handlePaymentSuccess}
-              onError={() =>
-                toast.error("Payment process was not completed at this time.")
-              }
-            />
-          </button>
+            >
+              <PayPalButton
+                amount={paypalAmount}
+                options={{
+                  clientId: process.env.NEXT_PUBLIC_PAYPAL_LIVE_CLIENT_ID,
+                  currency: "USD",
+                }}
+                onSuccess={() => handlePaymentSuccess("Paypal")}
+                onError={() =>
+                  toast.error("Payment process was not completed at this time.")
+                }
+              />
+            </button>
+          )}
         </div>
       )}
     </form>

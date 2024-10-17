@@ -35,7 +35,7 @@ export async function GET(
     console.log("in here`");
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SHEET_ID || "",
-      range: "Sheet3!A:G",
+      range: "Sheet3!A:H",
     });
 
     const rows = response.data.values;
@@ -43,7 +43,7 @@ export async function GET(
       return NextResponse.json({ error: "No data found" }, { status: 404 });
     }
 
-    const row = rows.filter((row) => row[6] === id);
+    const row = rows.filter((row) => row[7] === id);
     if (!row) {
       return NextResponse.json({ error: "Row not found" }, { status: 404 });
     }
