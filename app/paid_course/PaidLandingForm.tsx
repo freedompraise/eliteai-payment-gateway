@@ -191,6 +191,18 @@ export default function PaidLandingForm({ setShowForm }: Params) {
   };
 
   const paystackConfig = {
+    customerDetails: {
+      values: [
+        uuidv4(),
+        formData.fullName,
+        formData.email,
+        courses.find((course) => course.code == formData.programs)?.course,
+        formData.programs,
+        format(new Date(), "MMMM d, yyyy"),
+        "paystack",
+      ],
+      ref,
+    },
     email: formData.email,
     amount: paystackAmount * 100, // Example amount in kobo
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_TEST_PUBLIC_KEY || "",
