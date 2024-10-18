@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { PayPalButton } from "react-paypal-button-v2";
 import externshipEmailTemplate from "../utils/externship_email_template";
+import { PaystackProps } from "react-paystack/dist/types";
 
 const PaystackButton = dynamic(
   () => import("react-paystack").then((mod) => mod.PaystackButton),
@@ -191,17 +192,23 @@ export default function PaidLandingForm({ setShowForm }: Params) {
   };
 
   const paystackConfig = {
-    customerDetails: {
-      values: [
-        uuidv4(),
-        formData.fullName,
-        formData.email,
-        courses.find((course) => course.code == formData.programs)?.course,
-        formData.programs,
-        format(new Date(), "MMMM d, yyyy"),
-        "paystack",
+    metadata: {
+      custom_fields: [
+        {
+          display_name: "values",
+          variable_name: "values",
+          value: [
+            uuidv4(),
+            formData.fullName,
+            formData.email,
+            courses.find((course) => course.code == formData.programs)?.course,
+            formData.programs,
+            format(new Date(), "MMMM d, yyyy"),
+            "paystack",
+            ref,
+          ],
+        },
       ],
-      ref,
     },
     email: formData.email,
     amount: paystackAmount * 100, // Example amount in kobo
