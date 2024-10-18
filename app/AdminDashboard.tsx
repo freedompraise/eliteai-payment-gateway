@@ -4,7 +4,7 @@ import { CompactTable } from "@table-library/react-table-library/compact";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { ChevronLeft } from "lucide-react";
-import { parse, isSameDay, format } from "date-fns";
+import { filterData } from "./utils/helpers";
 
 interface Params {
   setShowDashboard: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,7 +34,13 @@ export default function AdminDashboard({
       setIsLoading(true);
       try {
         const response = await fetch(
-          `/api/${program == 0 ? "get-row" : "get-rows-paid"}`
+          `/api/${
+            program == 0
+              ? "get-row"
+              : program == 1
+              ? "get-row/sheet-4"
+              : "get-rows-paid"
+          }`
         );
         if (!response.ok) {
           setIsLoading(false);
@@ -52,26 +58,13 @@ export default function AdminDashboard({
     getRows();
   }, [program]);
 
-  const formattedFilterDate = parse(filterDate, "dd/MM/yyyy", new Date());
-  const filteredData = filterDate
-    ? data
-        .map((item) => ({
-          ...item,
-          referrals: item.referrals.filter((referral) =>
-            isSameDay(
-              formattedFilterDate,
-              parse(referral.date, "MMMM d, yyyy", new Date())
-            )
-          ),
-        }))
-        .filter((item) => item.referrals.length > 0)
-    : data;
+  const filteredData = filterDate ? filterData(filterDate, data) : data;
   // console.log(data);
 
   return (
     <div className="h-screen w-screen fixed overflow-auto top-0 right-0 bg-black z-40">
       <div className="relative h-full w-full flex items-center justify-center py-10">
-        <div className=" h-full w-full text-white bg-black px-4 md:px-[80px]">
+        <div className=" h-full w-full text-white bg-black px-4 md:px-[80px] pb-[10rem]">
           <div className="flex space-x-2 pb-10 items-center">
             <button
               onClick={() => {
@@ -84,15 +77,15 @@ export default function AdminDashboard({
             <h1 className="text-xl font-semibold text-white/70">Dashboard</h1>
           </div>
           <div className="p-4 bg-white/5 rounded border border-accent/10">
-            <div className="pb-4 flex justify-between items-center gap-4">
+            <div className="pb-4 flex flex-col md:flex-row md:justify-between md:items-center space-y-2 md:space-y-0 gap-4">
               <h2>Referrals</h2>
-              <div className="space-x-4">
+              <div className="md:space-x-4 space-y-3 md:space-y-0">
                 <input
                   type="text"
-                  placeholder="Enter date (dd/mm/yyyy)"
+                  placeholder="Enter date range (dd/mm/yyyy-dd/mm/yyyy)"
                   value={filterDate}
                   onChange={(e) => setFilterDate(e.target.value)}
-                  className="bg-transparent text-sm text-accent outline-none border border-accent/30 px-2 py-1 rounded"
+                  className="bg-transparent text-sm text-accent outline-none w-full md:w-[20rem] border border-accent/30 px-2 py-1 rounded"
                 />
                 <select
                   id="programs"
@@ -104,11 +97,11 @@ export default function AdminDashboard({
                   className="bg-transparent text-sm text-accent outline-none border-none"
                 >
                   <option value="0">Free Training Program</option>
-                  <option value="1">Externship Program</option>
+                  <option value="1">Free Training Program 2</option>
+                  <option value="2">Externship Program</option>
                 </select>
               </div>
             </div>
-
             {isLoading && (
               <h3 className="text-sm text-white/40">Loading data...</h3>
             )}

@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { format, parse, isSameDay } from "date-fns"; // Import date-fns functions
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { filterData2 } from "@/app/utils/helpers";
 
 export default function Dashboard() {
   const [data, setData] = useState<
@@ -89,17 +90,7 @@ export default function Dashboard() {
   }, [program, ref_code]);
 
   // Filter data based on the selected date
-  const filteredData = filterDate
-    ? data.filter((item) => {
-        const itemDate = parse(
-          item.registration_date,
-          "MMMM d, yyyy",
-          new Date()
-        );
-        const inputDate = parse(filterDate, "dd/MM/yyyy", new Date());
-        return isSameDay(itemDate, inputDate);
-      })
-    : data;
+  const filteredData = filterDate ? filterData2(filterDate, data) : data;
 
   const COLUMNS = [
     { label: "Full Name", renderCell: (item: any) => item.full_name },
@@ -121,12 +112,12 @@ export default function Dashboard() {
         <h1 className="text-xl font-semibold text-white/70">Dashboard</h1>
       </div>
       <div className="p-4 bg-white/5 rounded border border-accent/10">
-        <div className="pb-4 flex justify-between items-center gap-4">
+        <div className="pb-4 flex flex-col md:flex-row md:justify-between md:items-center space-y-2 md:space-y-0 gap-4">
           <h2>Referrals</h2>
           <div className="space-x-4">
             <input
               type="text"
-              placeholder="Enter date (dd/mm/yyyy)"
+              placeholder="Enter date range (dd/mm/yyyy-dd/mm/yyyy)"
               value={filterDate}
               onChange={(e) => setFilterDate(e.target.value)}
               className="bg-transparent text-sm text-accent outline-none border border-accent/30 px-2 py-1 rounded"
