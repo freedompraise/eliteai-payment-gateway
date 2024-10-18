@@ -55,7 +55,7 @@ export default function LandingForm({ setShowForm }: Params) {
       formData.phone,
       formData.country,
       formData.age.toString(),
-      formData.programs,
+      JSON.stringify([formData.programs]),
       formData.youtubeUsername,
       formData.twitterUsername,
       formData.linkedinUrl,
@@ -63,14 +63,15 @@ export default function LandingForm({ setShowForm }: Params) {
       formData.facebookUsername,
       formData.instagramUsername,
       format(currentDate, "MMMM d, yyyy"),
+      ref,
     ];
 
-    const response = await fetch("/api/update-sheet", {
+    const response = await fetch("/api/update-sheet-4", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ values, ref }),
+      body: JSON.stringify({ values }),
     });
 
     if (response.ok) {
