@@ -61,6 +61,7 @@ export async function POST(request: NextRequest) {
       if (customField) {
         const values = customField.value;
         const ref = values.splice(values.length - 1);
+        const ref_val = ref[0] ? ref[0] : "";
 
         const response = await fetch(
           `https://eliteai.vercel.app/api/update-sheet-3`,
@@ -69,7 +70,7 @@ export async function POST(request: NextRequest) {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ values, ref }),
+            body: JSON.stringify({ values, ref_val }),
           }
         );
 
@@ -86,7 +87,7 @@ export async function POST(request: NextRequest) {
             values[2],
             "Congratulations on Your Externship!",
             text,
-            ref[0] ? ref[0] : "`",
+            ref_val,
             values[1],
             program ? program : ""
           );
