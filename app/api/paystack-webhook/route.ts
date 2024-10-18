@@ -18,7 +18,7 @@ let courses = [
 ];
 
 // Replace with your actual Paystack secret key from your environment
-const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || "";
+const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_LIVE_SECRET_KEY || "";
 
 export async function POST(request: NextRequest) {
   try {
