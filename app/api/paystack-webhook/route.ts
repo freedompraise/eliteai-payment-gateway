@@ -62,13 +62,16 @@ export async function POST(request: NextRequest) {
         const values = customField.value;
         const ref = values.splice(values.length - 1);
 
-        const response = await fetch("/api/update-sheet-3", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ values, ref }),
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/update-sheet-3`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ values, ref }),
+          }
+        );
 
         if (response.ok) {
           let program = courses.find((course) => values[4] == course.code)
@@ -128,13 +131,16 @@ async function sendEmail(
     `https://eliteai.vercel.app/paid_course?ref=${ref}`,
     "html"
   );
-  const response = await fetch("/api/send-email", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ to, subject, text, html }),
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/send-email`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ to, subject, text, html }),
+    }
+  );
 
   if (!response.ok) {
     // Handle errors accordingly
