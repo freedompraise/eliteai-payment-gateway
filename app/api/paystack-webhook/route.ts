@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
             values[2],
             "Congratulations on Your Externship!",
             text,
-            ref[0] ? ref[0] : "",
+            ref[0] ? ref[0] : "`",
             values[1],
             program ? program : ""
           );
