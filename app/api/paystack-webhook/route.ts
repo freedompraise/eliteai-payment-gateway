@@ -1,5 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import externshipEmailTemplate from "@/app/utils/externship_email_template";
+
+let courses = [
+  { code: "8010", course: "Education Externship" },
+  { code: "8009", course: "IT Support Externship" },
+  { code: "7970", course: "Project Management Externship" },
+  {
+    code: "7937",
+    course: "Virtual Assistant Externship – Mastering Remote Support",
+  },
+  { code: "7936", course: "Community Management Externship" },
+  { code: "7935", course: "Business Analysis Externship" },
+  { code: "7934", course: "Data Analysis Externship" },
+  { code: "7915", course: "Content Creation Externship" },
+  { code: "7447", course: "Digital Marketing Externship" },
+];
 
 // Replace with your actual Paystack secret key from your environment
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY || "";
@@ -38,11 +54,46 @@ export async function POST(request: NextRequest) {
       // Access custom fields from metadata
       const customFields = data.metadata?.custom_fields || [];
       const referrer = data.metadata?.referrer;
+      const customField = customFields.find(
+        (field: any) => field.variable_name === "values"
+      );
 
-      // Log or process the custom fields
-      customFields.forEach((field: { display_name: string; value: any }) => {
-        console.log(`${field.display_name}: ${field.value}`);
-      });
+      if (customField) {
+        const values = customField.value;
+        const ref = values.splice(values.length - 1);
+
+        const response = await fetch("/api/update-sheet-3", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ values, ref }),
+        });
+
+        if (response.ok) {
+          let program = courses.find((course) => values[4] == course.code)
+            ?.course;
+          let text = externshipEmailTemplate(
+            values[1],
+            program ? program : "",
+            `https://eliteai.vercel.app/paid_course?ref=${ref}`,
+            "text"
+          );
+          await sendEmail(
+            values[2],
+            "Congratulations on Your Externship!",
+            text,
+            ref,
+            values[1],
+            program ? program : ""
+          );
+        }
+      }
+
+      //   // Log or process the custom fields
+      //   customFields.forEach((field: { display_name: string; value: any }) => {
+      //     console.log(`${field.display_name}: ${field.value}`);
+      //   });
 
       // Return success response with custom fields
       return NextResponse.json({
@@ -60,4 +111,37 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+async function sendEmail(
+  to: string,
+  subject: string,
+  text: string,
+  ref: string,
+  name: string,
+  program: string
+  // html: string
+) {
+  let html = externshipEmailTemplate(
+    name,
+    program,
+    `https://eliteai.vercel.app/paid_course?ref=${ref}`,
+    "html"
+  );
+  const response = await fetch("/api/send-email", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ to, subject, text, html }),
+  });
+
+  if (!response.ok) {
+    // Handle errors accordingly
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Failed to send email");
+  }
+
+  const data = await response.json();
+  return data;
 }
