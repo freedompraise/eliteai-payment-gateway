@@ -11,7 +11,7 @@ import {
   Youtube,
 } from "lucide-react";
 import { z } from "zod";
-import { landingFormSchema } from "./schemas"; // Adjust the import based on your file structure
+import { landingFormSchema } from "./schemas";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { format } from "date-fns";
@@ -208,12 +208,6 @@ export default function LandingForm({ setShowForm }: Params) {
             />
           </div>
         </div>
-        {/* <button
-          type="submit"
-          className="w-16 hidden hover:animate-pulse bg-accent text-white md:flex items-center justify-center"
-        >
-          <ArrowRight />
-        </button> */}
       </div>
       <div className="flex space-x-1">
         {errors.email && (

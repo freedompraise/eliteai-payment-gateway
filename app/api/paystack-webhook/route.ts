@@ -17,7 +17,6 @@ let courses = [
   { code: "7447", course: "Digital Marketing Externship" },
 ];
 
-// Replace with your actual Paystack secret key from your environment
 const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_LIVE_SECRET_KEY || "";
 
 export async function POST(request: NextRequest) {
@@ -87,17 +86,12 @@ export async function POST(request: NextRequest) {
             values[2],
             "Congratulations on Your Externship!",
             text,
-            ref_val,
+            values[0],
             values[1],
             program ? program : ""
           );
         }
       }
-
-      //   // Log or process the custom fields
-      //   customFields.forEach((field: { display_name: string; value: any }) => {
-      //     console.log(`${field.display_name}: ${field.value}`);
-      //   });
 
       // Return success response with custom fields
       return NextResponse.json({
