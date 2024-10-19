@@ -32,25 +32,47 @@ export async function GET(
   });
 
   try {
-    console.log("in here`");
+    console.log("in here");
+
+    // Get data from both Sheet1 and Sheet4
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SHEET_ID || "",
       range: "Sheet1!A:C",
     });
+    const response2 = await sheets.spreadsheets.values.get({
+      spreadsheetId: process.env.SHEET_ID || "",
+      range: "Sheet4!A:C",
+    });
 
+    // Extract rows from both responses
     const rows = response.data.values;
+    const rows2 = response2.data.values;
+
+    // Check if both sheets have data
     if (!rows || rows.length === 0) {
-      return NextResponse.json({ error: "No data found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "No data found in Sheet1" },
+        { status: 404 }
+      );
+    }
+    if (!rows2 || rows2.length === 0) {
+      return NextResponse.json(
+        { error: "No data found in Sheet4" },
+        { status: 404 }
+      );
     }
 
-    const row = rows.find((row) => row[2] === email);
+    const combinedRows = [...rows, ...rows2];
+
+    const row = combinedRows.find((row) => row[2] === email);
+
     if (!row) {
       return NextResponse.json({ error: "Row not found" }, { status: 404 });
     }
 
     return NextResponse.json(row);
   } catch (error) {
-    console.error("Error retrieving sheet:", error);
-    return NextResponse.json({ error: error }, { status: 500 });
+    console.error("Error fetching data:", error);
+    return NextResponse.json({ error: "An error occurred" }, { status: 500 });
   }
 }
