@@ -42,14 +42,14 @@ export default function LandingForm({ setShowForm }: Params) {
 
   const onSubmit = async (formData: LandingFormInputs) => {
     const currentDate = new Date();
-    const ref_id = uuidv4().toString();
+    const id = uuidv4().toString();
     setIsSubmitting(true);
     if (!isCommunityJoined)
       toast.info("Do make sure you have joined the community.");
 
     toast.info("Submitting...");
     const values = [
-      uuidv4(),
+      id,
       formData.fullName,
       formData.email,
       formData.phone,
@@ -75,7 +75,7 @@ export default function LandingForm({ setShowForm }: Params) {
     });
 
     if (response.ok) {
-      await sendWelcomeEmail(formData.fullName, formData.email, ref_id);
+      await sendWelcomeEmail(formData.fullName, formData.email, id);
       toast.success("Form submitted successfully");
       setIsSubmitting(false);
       // reset();
