@@ -78,7 +78,7 @@ export default function LandingForm({ setShowForm }: Params) {
       await sendWelcomeEmail(formData.fullName, formData.email, id);
       toast.success("Form submitted successfully");
       setIsSubmitting(false);
-      // reset();
+      reset();
       setShowForm(false);
     } else {
       setIsSubmitting(false);

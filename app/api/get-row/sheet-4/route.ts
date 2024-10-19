@@ -26,10 +26,6 @@ export async function GET(request: Request) {
       spreadsheetId: process.env.SHEET_ID || "",
       range: "Sheet4!A:O", // Assuming rows[0] is ID and rows[7] is Referrer
     });
-    const getSheet2Response = await sheets.spreadsheets.values.get({
-      spreadsheetId: process.env.SHEET_ID || "",
-      range: "Sheet2!A:C", // Assuming rows[0] is ID and rows[7] is Referrer
-    });
 
     const rows = getResponse.data.values;
     if (!rows || rows.length === 0) {
