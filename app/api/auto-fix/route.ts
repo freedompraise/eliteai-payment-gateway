@@ -101,18 +101,20 @@ export async function GET(request: NextRequest) {
   });
 
   newData = mergeDuplicateSubArrays(newData);
-  console.log("new data: ", newData.slice(0, 9));
+  //   console.log("new data: ", newData.slice(0, 9));
 
-  let csvContent = convertToCSV(newData);
-  let path = "/Users/macbook/Everything Programming/eliteai/data.csv";
+  //   let csvContent = convertToCSV(newData);
+  //   let path = "/Users/macbook/Everything Programming/eliteai/data.csv";
 
-  fs.writeFile(path, csvContent, (err: any) => {
-    if (err) {
-      console.error("Error writing to file:", err);
-    } else {
-      console.log("CSV file has been saved successfully.");
-    }
-  });
+  //   fs.writeFile(path, csvContent, (err: any) => {
+  //     if (err) {
+  //       console.error("Error writing to file:", err);
+  //     } else {
+  //       console.log("CSV file has been saved successfully.");
+  //     }
+  //   });
+
+  return NextResponse.json(newData);
 }
 
 function mergeDuplicateSubArrays(data: any) {
