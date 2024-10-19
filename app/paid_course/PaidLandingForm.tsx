@@ -91,6 +91,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
   const handleInputChange = async (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
+    setPaystackAmount(24000);
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
