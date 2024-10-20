@@ -62,6 +62,8 @@ export async function POST(request: NextRequest) {
         const ref = values.splice(values.length - 1);
         const ref_val = ref[0] ? ref[0] : "";
 
+        console.log("value, ref: ", values, ref);
+
         const response = await fetch(
           `https://eliteai.vercel.app/api/update-sheet-3`,
           {
