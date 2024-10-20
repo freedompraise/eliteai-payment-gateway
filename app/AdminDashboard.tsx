@@ -1,7 +1,7 @@
 "use client";
 import { CompactTable } from "@table-library/react-table-library/compact";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { ChevronLeft } from "lucide-react";
 import { filterData } from "./utils/helpers";
@@ -22,42 +22,57 @@ export default function AdminDashboard({
     }[]
   >([]);
   const [program, setProgram] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
   const [filterDate, setFilterDate] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setData([]);
   }, [program]);
 
   useEffect(() => {
+    const abortController = new AbortController(); // Create an AbortController instance
+    const signal = abortController.signal; // Get the signal to pass into the fetch request
+
     async function getRows() {
       setIsLoading(true);
+
       try {
         const response = await fetch(
           `/api/${
-            program == 0
+            program === 0
               ? "get-row"
-              : program == 1
+              : program === 1
               ? "get-row/sheet-4"
               : "get-rows-paid"
-          }`
+          }`,
+          { signal } // Pass the signal into fetch
         );
+
         if (!response.ok) {
           setIsLoading(false);
           toast.error("Can't retrieve data at the moment");
         }
+
         const rowData = await response.json();
         setData(rowData);
-        setIsLoading(false);
-        // return formattedData;
       } catch (error) {
-        console.error("Error fetching row:", error);
+        if (error instanceof Error && error.name === "AbortError") {
+          console.log("Fetch aborted");
+        } else {
+          console.error("Error fetching row:", error);
+        }
+      } finally {
+        setIsLoading(false);
       }
     }
 
     getRows();
-  }, [program]);
 
+    // Clean up: Abort the fetch request if the component unmounts or program changes
+    return () => {
+      abortController.abort();
+    };
+  }, [program]);
   const filteredData = filterDate ? filterData(filterDate, data) : data;
   // console.log(data);
 
