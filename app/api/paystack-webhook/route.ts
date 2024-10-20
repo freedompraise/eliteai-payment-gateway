@@ -17,7 +17,7 @@ let courses = [
   { code: "7447", course: "Digital Marketing Externship" },
 ];
 
-const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_LIVE_SECRET_KEY || "";
+const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_TEST_SECRET_KEY || "";
 
 export async function POST(request: NextRequest) {
   try {
