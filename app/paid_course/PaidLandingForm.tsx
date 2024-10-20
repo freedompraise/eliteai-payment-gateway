@@ -21,18 +21,18 @@ interface Params {
 }
 
 let courses = [
-  { code: "8010", course: "Education Externship" },
-  { code: "8009", course: "IT Support Externship" },
-  { code: "7970", course: "Project Management Externship" },
+  { code: "8010", course: "Education Internship" },
+  { code: "8009", course: "IT Support Internship" },
+  { code: "7970", course: "Project Management Internship" },
   {
     code: "7937",
-    course: "Virtual Assistant Externship – Mastering Remote Support",
+    course: "Virtual Assistant Internship – Mastering Remote Support",
   },
-  { code: "7936", course: "Community Management Externship" },
-  { code: "7935", course: "Business Analysis Externship" },
-  { code: "7934", course: "Data Analysis Externship" },
-  { code: "7915", course: "Content Creation Externship" },
-  { code: "7447", course: "Digital Marketing Externship" },
+  { code: "7936", course: "Community Management Internship" },
+  { code: "7935", course: "Business Analysis Internship" },
+  { code: "7934", course: "Data Analysis Internship" },
+  { code: "7915", course: "Content Creation Internship" },
+  { code: "7447", course: "Digital Marketing Internship" },
 ];
 
 function truncateText(text: string, maxLength: number) {
@@ -177,7 +177,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
         ?.course;
       await sendEmail(
         formData.email,
-        "Congratulations on Your Externship!",
+        "Congratulations on Your Internship!",
         id
       );
       toast.success("You've been enrolled successfully");
@@ -211,7 +211,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     },
     email: formData.email,
     amount: paystackAmount * 100, // Example amount in kobo
-    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_TEST_PUBLIC_KEY || "",
+    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY || "",
     onSuccess: () => toast.success("Payment successful"),
     onClose: () => toast.info("Payment process was interrupted"),
   };
@@ -268,31 +268,6 @@ export default function PaidLandingForm({ setShowForm }: Params) {
                   {truncateText(course.course, 40)}
                 </option>
               ))}
-              {/* <option value="Data Analytics Externship">
-                Data Analytics Externship
-              </option>
-              <option value="Business Analytics Externship">
-                Business Analytics Externship
-              </option>
-              <option value="Virtual Assistant Externship">
-                Virtual Assistant Externship
-              </option>
-              <option value="Education Externship">Education Externship</option>
-              <option value="Content creation Externship">
-                Content creation Externship
-              </option>
-              <option value="Digital Marketing Externship">
-                Digital Marketing Externship
-              </option>
-              <option value="IT support Externship">
-                IT support Externship
-              </option>
-              <option value="Community Management Externship">
-                Community Management Externship
-              </option>
-              <option value="Program management Externship">
-                Program management Externship
-              </option> */}
             </select>
           </div>
         </div>
@@ -304,7 +279,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
         )}
       </div>
       <p className="text-xs mt-3 text-gray-100">
-        This program is a PAID Externship placement program. Training is open to
+        This program is a PAID Internship placement program. Training is open to
         all Africans.{" "}
       </p>
 

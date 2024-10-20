@@ -113,7 +113,7 @@ export default function AdminDashboard({
                 >
                   <option value="0">Free Training Program</option>
                   <option value="1">Free Training Program 2</option>
-                  <option value="2">Externship Program</option>
+                  <option value="2">Internship Program</option>
                 </select>
               </div>
             </div>

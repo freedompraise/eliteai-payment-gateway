@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         to: mail.email,
-        subject: "Your Referral Code for the EliteAI Paid Externship",
+        subject: "Your Referral Code for the EliteAI Paid Internship",
         text: affiliateEmailTemplate("text", mail.name, mail.ref),
         html: affiliateEmailTemplate("html", mail.name, mail.ref),
       }),

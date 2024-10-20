@@ -12,158 +12,70 @@ export default function externshipEmailTemplate(
   type: emailContent
 ) {
   if (type == "text") {
-    return `
-        Dear ${participantName},
+    return `Welcome to Elite Global Intelligence Technologies (EGIT) Internships!
 
-Congratulations on securing a spot in the ${externshipName} at Elite Global AI! We are thrilled to have you on board and look forward to supporting you as you grow your skills in this exciting field.
-
-Here's what you need to get started:
-
-Your Referral Link:
-Share your unique referral link to invite others to join the program and build your network:
-${referralLink}
-
-Access the Externship Platform:
-Click the link below to access the externship platform, where all your learning materials and tasks will be available:
-${externshipPlatformLink}
-
-Join the Externship Community:
-https://chat.whatsapp.com/Ef2A6VazyWa9ME0IVKPR86
-
-Unlock Your Externship:
-To unlock your externship, please use this coupon code at checkout:
-${couponCode}
-
-Watch the Onboarding Video:
-We’ve created a short video to walk you through the entire process—from signing in to navigating the platform. Watch it here:
-${onboardingVideoLink}
-
-Feel free to reach out if you have any questions or need assistance along the way. We're here to ensure you have the best learning experience possible.
-
-Once again, welcome to the ${externshipName}! We’re excited to see all that you’ll accomplish.
-
-Best regards,
-Ikpia Blessing Isioma
-Marketing Director, Elite Global AI
-[+2349058522159]
-
-        `;
+    Dear ${participantName},
+    
+    Congratulations on successfully completing your payment and securing your spot in the EGIT Internship Program! We're thrilled to have you on board.
+    
+    We are excited to inform you that your internship officially starts on November 14th, 2024. On that day, all internship courses and materials will be unlocked for access. Please refrain from trying to unlock the courses before this date, as the system might prompt you to pay again. Rest assured, all courses will be accessible without issue starting from November 14th.
+    
+    Here is the link to the EGIT Internship Platform:
+    www.elitegloblinternships.com
+    
+    Additionally, as part of your enrollment, here is your personal referral link:
+    ${referralLink}
+    
+    You can use this link to refer others to the paid internship and the EliteAI paid training program.
+    
+    On the day of the internship launch, you will receive an onboarding email with all the necessary instructions on how to get started. This will guide you through the platform, the curriculum, and any other relevant information to ensure a smooth experience.
+    
+    If you have any questions before the program begins, feel free to reach out. We look forward to your participation and the value you’ll bring to this exciting journey!
+    
+    Best regards,
+    Ikpia Blessing Isioma
+    Marketing Director
+    Elite Global Intelligence Technologies (EGIT)
+    +2349058522159, +2349156109492
+    `;
   } else {
     return `
-          <!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Welcome to Elite Global AI Externship</title>
-          <style>
-              body {
-                  font-family: Arial, sans-serif;
-                  background-color: #f4f4f4;
-                  margin: 0;
-                  padding: 0;
-              }
-              .email-container {
-                  background-color: #ffffff;
-                  margin: 0 auto;
-                  padding: 20px;
-                  max-width: 600px;
-                  border: 1px solid #dddddd;
-                  border-radius: 8px;
-              }
-              .header {
-                  text-align: center;
-                  padding: 20px 0;
-              }
-              .header img {
-                  max-width: 150px;
-              }
-              .content {
-                  margin: 20px 0;
-              }
-              .content h1 {
-                  font-size: 24px;
-                  color: #333333;
-              }
-              .content p {
-                  font-size: 16px;
-                  color: #666666;
-                  line-height: 1.5;
-              }
-              .referral-link, .platform-link, .community-link, .coupon-code, .onboarding-video {
-                  background-color: #007BFF;
-                  color: #ffffff;
-                  text-align: center;
-                  padding: 10px;
-                  border-radius: 4px;
-                  text-decoration: none;
-                  display: inline-block;
-                  margin: 20px 0;
-              }
-              .footer {
-                  text-align: center;
-                  font-size: 12px;
-                  color: #999999;
-                  padding: 20px 0;
-              }
-              .footer a {
-                  color: #007BFF;
-                  text-decoration: none;
-              }
-          </style>
-      </head>
-      <body>
-          <div class="email-container">
-              <div class="header">
-                  <img src="https://eliteai.com/logo.png" alt="Elite AI">
-              </div>
-              <div class="content">
-                  <h1>Congratulations on Your Externship!</h1>
-                  <p>Dear ${participantName},</p>
-                  <p>
-                      Congratulations on securing a spot in the ${externshipName} externship program at Elite Global AI! We are thrilled to have you on board and look forward to supporting you as you grow your skills in this exciting field.
-                  </p>
-                  <p>Here's what you need to get started:</p>
-                  <p>
-                      <strong>Your Referral Link:</strong><br>
-                      Share your unique referral link to invite others to join the program and build your network:<br>
-                      <a href="${referralLink}" class="referral-link">${referralLink}</a>
-                  </p>
-                  <p>
-                      <strong>Access the Externship Platform:</strong><br>
-                      Click the link below to access the externship platform, where all your learning materials and tasks will be available:<br>
-                      <a href="${externshipPlatformLink}" class="platform-link">${externshipPlatformLink}</a>
-                  </p>
-                  <p>
-                      <strong>Join the Externship Community:</strong><br>
-                      <a href=${communityLink} class="community-link">Join the Community</a>
-                  </p>
-                  <p>
-                      <strong>Unlock Your Externship:</strong><br>
-                      To unlock your externship, please use this coupon code at checkout:<br>
-                      <span class="coupon-code">${couponCode}</span>
-                  </p>
-                  <p>
-                      <strong>Watch the Onboarding Video:</strong><br>
-                      We’ve created a short video to walk you through the entire process—from signing in to navigating the platform. Watch it here:<br>
-                      <a href="${onboardingVideoLink}" class="onboarding-video">${onboardingVideoLink}</a>
-                  </p>
-                  <p>
-                      Feel free to reach out if you have any questions or need assistance along the way. We're here to ensure you have the best learning experience possible.
-                  </p>
-                  <p>Once again, welcome to the EliteAi ${externshipName} externship program! We’re excited to see all that you’ll accomplish.</p>
-                  <p>Best regards,</p>
-                  <p>Ikpia Blessing Isioma<br>Marketing Director, Elite Global AI<br>[+2349058522159]</p>
-              </div>
-              <div class="footer">
-                  <p>
-                      &copy; 2024 Elite Global AI. All rights reserved.<br>
-                  </p>
-              </div>
-          </div>
-      </body>
-      </html>
-      
-          `;
+    <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to EGIT Internships</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd;">
+    <h2 style="color: #2c3e50;">Welcome to Elite Global Intelligence Technologies (EGIT) Internships!</h2>
+
+    <p>Dear <strong>${participantName}</strong>,</p>
+
+    <p>Congratulations on successfully completing your payment and securing your spot in the <strong>EGIT Internship Program</strong>! We're thrilled to have you on board.</p>
+
+    <p>We are excited to inform you that your internship officially starts on <strong>November 14th, 2024</strong>. On that day, all internship courses and materials will be unlocked for access. Please refrain from trying to unlock the courses before this date, as the system might prompt you to pay again. Rest assured, all courses will be accessible without issue starting from November 14th.</p>
+
+    <p>Here is the link to the EGIT Internship Platform:</p>
+    <p><a href="http://www.elitegloblinternships.com" style="color: #3498db;">www.elitegloblinternships.com</a></p>
+
+    <p>Additionally, as part of your enrollment, here is your personal referral link:</p>
+    <p><a href="${referralLink}" style="color: #e74c3c;">${referralLink}</a></p>
+
+    <p>On the day of the internship launch, you will receive an onboarding email with all the necessary instructions on how to get started. This will guide you through the platform, the curriculum, and any other relevant information to ensure a smooth experience.</p>
+
+    <p>If you have any questions before the program begins, feel free to reach out. We look forward to your participation and the value you’ll bring to this exciting journey!</p>
+
+    <p>Best regards,<br>
+    <strong>Ikpia Blessing Isioma</strong><br>
+    Marketing Director<br>
+    Elite Global Intelligence Technologies (EGIT)<br>
+    +2349058522159, +2349156109492</p>
+  </div>
+</body>
+</html>
+
+    `;
   }
 }

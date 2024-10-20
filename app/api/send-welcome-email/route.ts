@@ -12,11 +12,11 @@ export async function POST(request: Request) {
   
   Exclusive Discount
   
-  As a valued participant, you're eligible for a discounted onboarding fee of N16,000 ($10) instead of N24,000 ($15) for our Externship platform. This offer is only available to those who take the training.
+  As a valued participant, you're eligible for a discounted onboarding fee of N16,000 ($10) instead of N24,000 ($15) for our Paid Internship platform. This offer is only available to those who take the training.
   
-  Be among the first 100 participants to pay the N16,000 ($10) Externship onboarding fee and receive N80,000 ($50) refund after the Externship Onboarding.
+  Be among the first 100 participants to pay the N16,000 ($10) Paid Internship onboarding fee and receive N80,000 ($50) refund after the Paid Internship Onboarding.
   
-  Our Externship program is designed to build your professional experience and portfolio. This is an opportunity to join our Global workforce which has numerous benefits like:
+  Our Paid Internship program is designed to build your professional experience and portfolio. This is an opportunity to join our Global workforce which has numerous benefits like:
   
   - To Gain hands-on experience
   - Enhance your skills
@@ -34,11 +34,11 @@ export async function POST(request: Request) {
   
   Refer 10 people to the training program and get N1,000.
   
-  Also, For each referral who pays the Externship onboarding fee, you'll earn a 20% commission
+  Also, For each referral who pays the Paid Internship onboarding fee, you'll earn a 20% commission
   
-  Hit a milestone of 150 referrals who pay for the Externship Onboarding fee and receive N1,000,000 ($650).
+  Hit a milestone of 150 referrals who pay for the Paid Internship Onboarding fee and receive N1,000,000 ($650).
   
-  Pay the discounted onboarding fee and begin your Externship journey.
+  Pay the discounted onboarding fee and begin your Paid Internship journey.
   
   Best regards,
   Elite Global AI Team`;

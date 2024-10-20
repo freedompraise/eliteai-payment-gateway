@@ -17,7 +17,7 @@ export default function Home() {
           <div className="relative p-10 h-max md:max-w-3xl space-y-16  md:-translate-y-0 md:top-0 md:left-[50%] md:-translate-x-[50%] z-20">
             <div className="">
               <h2 className="text-sm md:text-base text-accent font-semibold">
-                ELITE GLOBAL AI PAID EXTERNSHIP PROGRAM
+                ELITE GLOBAL AI PAID INTERNSHIP PROGRAM
               </h2>
               <h1 className="text-2xl md:text-5xl !leading-snug">
                 Discover a whole new realm of AI learning.

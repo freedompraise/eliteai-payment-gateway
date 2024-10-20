@@ -68,7 +68,7 @@ export default function Navbar() {
                     : "bg-transparent text-white"
                 }`}
               >
-                Externship
+                Paid Internship
               </button>
             </Link>
           </div>

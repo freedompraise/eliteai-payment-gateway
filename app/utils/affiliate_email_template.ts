@@ -9,7 +9,7 @@ Hi ${name},
 
 We hope this message finds you well!
 
-We’re excited to provide you with your personal referral code for the EliteAI Paid Externship. This code allows you to refer others to our exclusive EliteAI paid training program, even if you are not enrolled yourself, giving you the opportunity to earn rewards as an affiliate.
+We’re excited to provide you with your personal referral code for the EliteAI Paid Internship. This code allows you to refer others to our exclusive EliteAI paid training program, even if you are not enrolled yourself, giving you the opportunity to earn rewards as an affiliate.
 
 Your Referral Link: ${ref}
 
@@ -28,19 +28,19 @@ The EliteAI Team
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Referral Code for the EliteAI Paid Externship</title>
+  <title>Your Referral Code for the EliteAI Paid Internship</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6;">
   <table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
       <td>
-        <h2 style="color: #333;">Your Referral Code for the EliteAI Paid Externship</h2>
+        <h2 style="color: #333;">Your Referral Code for the EliteAI Paid Internship</h2>
 
         <p>Hi <strong>${name}</strong>,</p>
 
         <p>We hope this message finds you well!</p>
 
-        <p>We’re excited to provide you with your personal referral code for the <strong>EliteAI Paid Externship</strong>. This code allows you to refer others to our exclusive EliteAI paid training program, even if you are not enrolled yourself, giving you the opportunity to earn rewards as an affiliate.</p>
+        <p>We’re excited to provide you with your personal referral code for the <strong>EliteAI Paid Internship</strong>. This code allows you to refer others to our exclusive EliteAI paid training program, even if you are not enrolled yourself, giving you the opportunity to earn rewards as an affiliate.</p>
 
         <p><strong>Your Referral Link:</strong> <a href="${ref}" style="color: #1a73e8;">${ref}</a></p>
 

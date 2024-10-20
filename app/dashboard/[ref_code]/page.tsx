@@ -132,7 +132,7 @@ export default function Dashboard() {
               className="bg-transparent text-sm text-accent outline-none border-none"
             >
               <option value="0">Free Training Program</option>
-              <option value="1">Externship Program</option>
+              <option value="1">Internship Program</option>
             </select>
           </div>
         </div>

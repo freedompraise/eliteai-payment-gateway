@@ -3,21 +3,21 @@ import crypto from "crypto";
 import externshipEmailTemplate from "@/app/utils/externship_email_template";
 
 let courses = [
-  { code: "8010", course: "Education Externship" },
-  { code: "8009", course: "IT Support Externship" },
-  { code: "7970", course: "Project Management Externship" },
+  { code: "8010", course: "Education Internship" },
+  { code: "8009", course: "IT Support Internship" },
+  { code: "7970", course: "Project Management Internship" },
   {
     code: "7937",
-    course: "Virtual Assistant Externship – Mastering Remote Support",
+    course: "Virtual Assistant Internship – Mastering Remote Support",
   },
-  { code: "7936", course: "Community Management Externship" },
-  { code: "7935", course: "Business Analysis Externship" },
-  { code: "7934", course: "Data Analysis Externship" },
-  { code: "7915", course: "Content Creation Externship" },
-  { code: "7447", course: "Digital Marketing Externship" },
+  { code: "7936", course: "Community Management Internship" },
+  { code: "7935", course: "Business Analysis Internship" },
+  { code: "7934", course: "Data Analysis Internship" },
+  { code: "7915", course: "Content Creation Internship" },
+  { code: "7447", course: "Digital Marketing Internship" },
 ];
 
-const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_TEST_SECRET_KEY || "";
+const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_LIVE_SECRET_KEY || "";
 
 export async function POST(request: NextRequest) {
   try {
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
           );
           await sendEmail(
             values[2],
-            "Congratulations on Your Externship!",
+            "Congratulations on Your Internship!",
             text,
             values[0],
             values[1],
