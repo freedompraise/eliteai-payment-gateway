@@ -32,10 +32,10 @@ export default function GenerateRefCode() {
     toast.info("Generating...");
     setIsSubmitting(true);
     const uuid = uuidv4().toString();
-    const values = [uuid, data.fullName, JSON.stringify([])];
+    const values = [uuid, data.fullName, data.email];
 
     try {
-      const response = await fetch("/api/handle-ref", {
+      const response = await fetch("/api/handle-ref-5", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export default function GenerateRefCode() {
           mail: {
             name: data.fullName,
             email: data.email,
-            ref: `https://eliteai.vercel.app/?ref=${uuid}`,
+            ref: `https://eliteai.vercel.app/paid_course?ref=${uuid}`,
           },
         }),
       });
@@ -70,7 +70,7 @@ export default function GenerateRefCode() {
 
   const handleCopy = () => {
     if (generatedUuid) {
-      copy(`https://eliteai.vercel.app/?ref=${generatedUuid}`);
+      copy(`https://eliteai.vercel.app/paid_course?ref=${generatedUuid}`);
       toast.success("Copied to clipboard!");
     }
   };
@@ -86,7 +86,7 @@ export default function GenerateRefCode() {
               </button>
               <div>
                 <h1 className="text-lg font-medium">
-                  Welcome to the Elite AI Ambassador Program
+                  Welcome to the Elite AI Affiliate Program
                 </h1>
                 <p className="text-xs text-white/70">
                   To get access code fill in the form and press enter.{" "}
@@ -144,7 +144,7 @@ export default function GenerateRefCode() {
                 placeholder="Enter your referral code"
                 className="text-sm outline-none px-2 w-full bg-transparent text-white border-0"
                 disabled
-                value={`https://eliteai.vercel.app/?ref=${generatedUuid}`}
+                value={`https://eliteai.vercel.app/paid_course?ref=${generatedUuid}`}
                 // value={referralCode}
                 // onChange={(e) => setReferralCode(e.target.value)}
                 // onKeyPress={handleKeyPress}

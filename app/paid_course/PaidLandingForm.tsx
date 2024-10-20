@@ -49,6 +49,8 @@ export default function PaidLandingForm({ setShowForm }: Params) {
   const searchParams = useSearchParams();
   const ref = searchParams.get("ref");
 
+  console.log("ref: ", ref);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -108,17 +110,20 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     return false;
   }
 
-  // utils/sendEmail.ts
-
   async function sendEmail(
     to: string,
     subject: string,
-    text: string,
     ref: string
     // html: string
   ) {
     let program = courses.find((course) => formData.programs == course.code)
       ?.course;
+    let text = externshipEmailTemplate(
+      formData.fullName,
+      program ? program : "",
+      `https://eliteai.vercel.app/paid_course?ref=${ref}`,
+      "text"
+    );
     let html = externshipEmailTemplate(
       formData.fullName,
       program ? program : "",
@@ -170,16 +175,9 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     if (response.ok) {
       let program = courses.find((course) => formData.programs == course.code)
         ?.course;
-      let text = externshipEmailTemplate(
-        formData.fullName,
-        program ? program : "",
-        `https://eliteai.vercel.app/paid_course?ref=${ref}`,
-        "text"
-      );
       await sendEmail(
         formData.email,
         "Congratulations on Your Externship!",
-        text,
         id
       );
       toast.success("You've been enrolled successfully");
