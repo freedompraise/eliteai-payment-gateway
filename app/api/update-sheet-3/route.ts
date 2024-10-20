@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     auth: authClient,
   });
 
-  console.log("values: ", values);
+  console.log("values: ", values, ref);
 
   try {
     if (ref) {
