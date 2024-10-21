@@ -22,22 +22,22 @@ export default function Navbar() {
     }
   };
 
-  const handleAdminKeyPress = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (event.key === "Enter" && adminCode.trim() !== "") {
-      const hash = crypto
-        .createHash("sha256")
-        .update(adminCode.trim())
-        .digest("hex");
-      if (hash.toString() == process.env.NEXT_PUBLIC_PASS?.toString()) {
-        setShowAdminDashboardPopup(false);
-        setShowAdminDashboard(true);
-      } else {
-        toast.error("Wrong code");
-      }
-    }
-  };
+  // const handleAdminKeyPress = (
+  //   event: React.KeyboardEvent<HTMLInputElement>
+  // ) => {
+  //   if (event.key === "Enter" && adminCode.trim() !== "") {
+  //     const hash = crypto
+  //       .createHash("sha256")
+  //       .update(adminCode.trim())
+  //       .digest("hex");
+  //     if (hash.toString() == process.env.NEXT_PUBLIC_PASS?.toString()) {
+  //       setShowAdminDashboardPopup(false);
+  //       setShowAdminDashboard(true);
+  //     } else {
+  //       toast.error("Wrong code");
+  //     }
+  //   }
+  // };
 
   return (
     <div className="h-24 md:h-32 relative">
@@ -83,12 +83,12 @@ export default function Navbar() {
             >
               Dashboard
             </button>
-            <button
+            {/* <button
               onClick={() => setShowAdminDashboardPopup(true)}
               className="p-2 h-10 w-10 flex items-center justify-center rounded-sm text-accent border border-accent"
             >
               <Lock className="h-4 w-4" />
-            </button>
+            </button> */}
           </div>
         </div>
       </nav>
@@ -124,7 +124,7 @@ export default function Navbar() {
         </div>
       )}
 
-      {showAdminDashboardPopup && (
+      {/* {showAdminDashboardPopup && (
         <div className="h-screen w-screen fixed flex items-center justify-center top-0 right-0 px-8 bg-black z-40">
           <div className="md:max-w-xl space-y-6 border bg-black p-6 rounded border-accent/10">
             <div className="flex space-x-2 items-center">
@@ -160,7 +160,7 @@ export default function Navbar() {
           setShowDashboard={setShowAdminDashboard}
           setAdminCode={setAdminCode}
         />
-      )}
+      )} */}
     </div>
   );
 }
