@@ -1,10 +1,11 @@
 "use client";
-import { BackgroundPattern } from "./BackgroundPattern";
-import LandingForm from "./LandingForm";
-import Navbar from "./Navbar";
-import BackgroundPatternMobile from "./BackgroundPatternMobile";
+
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
+import PaidLandingForm from "./PaidLandingForm";
+import Navbar from "./Navbar";
+import { BackgroundPattern } from "./BackgroundPattern";
+import BackgroundPatternMobile from "./BackgroundPatternMobile";
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false);
@@ -16,11 +17,11 @@ export default function Home() {
           <div className="relative p-10 h-max md:max-w-3xl space-y-16  md:-translate-y-0 md:top-0 md:left-[50%] md:-translate-x-[50%] z-20">
             <div className="">
               <h2 className="text-sm md:text-base text-accent font-semibold">
-                ELITE GLOBAL AI FREE TRAINING + INTERNSHIP PROGRAM
+                ELITE GLOBAL AI PAID INTERNSHIP PROGRAM
               </h2>
               <h1 className="text-2xl md:text-5xl !leading-snug">
-                Discover AI. Empower Yourself.
-                <br className="hidden md:block" /> Shape Tomorrow.
+                Discover a whole new realm of AI learning.
+                {/* <br className="hidden md:block" /> Shape Tomorrow. */}
               </h1>
               <p className="text-xs md:text-sm pt-4 w-[80%] text-gray-300">
                 Elite Global AI invites you to explore the transformative world
@@ -44,7 +45,7 @@ export default function Home() {
               </div>
             </div>
             <div className="hidden md:block space-y-4">
-              <LandingForm setShowForm={setShowForm} />
+              <PaidLandingForm setShowForm={setShowForm} />
             </div>
           </div>
         </div>
@@ -57,7 +58,7 @@ export default function Home() {
       </div>
       {showForm && (
         <div className="fixed w-[100vw] md:hidden overflow-auto px-10 h-[100vh] bg-black z-40 top-0 right-0 space-y-4">
-          <LandingForm setShowForm={setShowForm} />
+          <PaidLandingForm setShowForm={setShowForm} />
         </div>
       )}
     </main>

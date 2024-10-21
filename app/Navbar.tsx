@@ -49,7 +49,7 @@ export default function Navbar() {
         </Link>
         <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 items-center">
           <div className="flex space-x-3 items-center">
-            <Link href={"/"}>
+            {/* <Link href={"/"}>
               <button
                 className={`py-2 px-4 rounded-sm text-nowrap font-semibold border border-accent text-sm md:text-base ${
                   pathname === "/"
@@ -59,11 +59,11 @@ export default function Navbar() {
               >
                 Free Training
               </button>
-            </Link>
-            <Link href={"/paid_course"}>
+            </Link> */}
+            <Link href={"/"}>
               <button
                 className={`py-2 px-4 rounded-sm text-nowrap border border-accent font-semibold text-sm md:text-base ${
-                  pathname === "/paid_course"
+                  pathname === "/"
                     ? "bg-accent text-white"
                     : "bg-transparent text-white"
                 }`}

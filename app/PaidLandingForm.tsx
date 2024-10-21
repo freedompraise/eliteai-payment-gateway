@@ -6,8 +6,8 @@ import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { PayPalButton } from "react-paypal-button-v2";
-import externshipEmailTemplate from "../utils/externship_email_template";
 import { PaystackProps } from "react-paystack/dist/types";
+import externshipEmailTemplate from "./utils/externship_email_template";
 
 const PaystackButton = dynamic(
   () => import("react-paystack").then((mod) => mod.PaystackButton),
@@ -220,6 +220,10 @@ export default function PaidLandingForm({ setShowForm }: Params) {
 
   return (
     <form className="rounded-sm h-max py-10 md:py-0 pb-20 md:pb-0">
+      <p className="text-xl mb-10 font-semibold">
+        <span className="text-sm text-amber-400">Amount Payable:</span>{" "}
+        {`N${paystackAmount}($${paypalAmount})`}
+      </p>
       <button
         type="button"
         onClick={() => setShowForm(false)}
@@ -283,12 +287,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
         all Africans.{" "}
       </p>
 
-      <p className="text-xl mt-10 font-semibold">
-        <span className="text-sm text-amber-400">Amount Payable:</span>{" "}
-        {`N${paystackAmount}($${paypalAmount})`}
-      </p>
-
-      <button
+      {/* <button
         className={`p-3 w-full mt-10 rounded-sm border items-center justify-center ${
           validating || !validateFormData()
             ? "bg-gray-400 text-gray-700 border-gray-400 cursor-not-allowed"
@@ -305,7 +304,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       <p className="text-amber-400 text-xs mt-1">
         <b>NOTE:</b> Discount is only available to students who have gone
         through our free training.
-      </p>
+      </p> */}
       {/* Buttons for Get discount and Paystack */}
       {validateFormData() && (
         <div className="flex flex-col md:flex-row md:space-x-5 space-y-5 md:space-y-0 mt-8">
