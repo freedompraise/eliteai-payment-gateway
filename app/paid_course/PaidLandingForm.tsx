@@ -121,13 +121,13 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     let text = externshipEmailTemplate(
       formData.fullName,
       program ? program : "",
-      `https://eliteai.vercel.app/paid_course?ref=${ref}`,
+      `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
       "text"
     );
     let html = externshipEmailTemplate(
       formData.fullName,
       program ? program : "",
-      `https://eliteai.vercel.app/paid_course?ref=${ref}`,
+      `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
       "html"
     );
     const response = await fetch("/api/send-email", {
@@ -326,7 +326,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
             />
           </button>
 
-          {!isSubmitting && (
+          {/* {!isSubmitting && (
             <button
               className="w-full h-[110px] overflow-y-clip"
               onClick={(e) => {
@@ -345,7 +345,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
                 }
               />
             </button>
-          )}
+          )} */}
         </div>
       )}
     </form>

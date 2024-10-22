@@ -102,7 +102,7 @@ export default function LandingForm({ setShowForm }: Params) {
         mail: {
           name: fullName,
           email: email,
-          ref: `https://eliteai.vercel.app/free_training/?ref=${uuid}`,
+          ref: `https://registration.elitegloblinternships.com/free_training/?ref=${uuid}`,
         },
       }),
     });

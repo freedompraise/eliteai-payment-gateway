@@ -45,7 +45,7 @@ export default function GenerateRefCode() {
           mail: {
             name: data.fullName,
             email: data.email,
-            ref: `https://eliteai.vercel.app/paid_course?ref=${uuid}`,
+            ref: `https://registration.elitegloblinternships.com/paid_course?ref=${uuid}`,
           },
         }),
       });
@@ -70,7 +70,9 @@ export default function GenerateRefCode() {
 
   const handleCopy = () => {
     if (generatedUuid) {
-      copy(`https://eliteai.vercel.app/paid_course?ref=${generatedUuid}`);
+      copy(
+        `https://registration.elitegloblinternships.com/paid_course?ref=${generatedUuid}`
+      );
       toast.success("Copied to clipboard!");
     }
   };
@@ -144,7 +146,7 @@ export default function GenerateRefCode() {
                 placeholder="Enter your referral code"
                 className="text-sm outline-none px-2 w-full bg-transparent text-white border-0"
                 disabled
-                value={`https://eliteai.vercel.app/paid_course?ref=${generatedUuid}`}
+                value={`https://registration.elitegloblinternships.com/paid_course?ref=${generatedUuid}`}
                 // value={referralCode}
                 // onChange={(e) => setReferralCode(e.target.value)}
                 // onKeyPress={handleKeyPress}

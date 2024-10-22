@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
         console.log("value, ref: ", values, ref);
 
         const response = await fetch(
-          `https://eliteai.vercel.app/api/update-sheet-3`,
+          `https://registration.elitegloblinternships.com/api/update-sheet-3`,
           {
             method: "POST",
             headers: {
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
           let text = externshipEmailTemplate(
             values[1],
             program ? program : "",
-            `https://eliteai.vercel.app/paid_course?ref=${ref}`,
+            `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
             "text"
           );
           await sendEmail(
@@ -125,16 +125,19 @@ async function sendEmail(
   let html = externshipEmailTemplate(
     name,
     program,
-    `https://eliteai.vercel.app/paid_course?ref=${ref}`,
+    `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
     "html"
   );
-  const response = await fetch(`https://eliteai.vercel.app/api/send-email`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ to, subject, text, html }),
-  });
+  const response = await fetch(
+    `https://registration.elitegloblinternships.com/api/send-email`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ to, subject, text, html }),
+    }
+  );
 
   if (!response.ok) {
     // Handle errors accordingly
