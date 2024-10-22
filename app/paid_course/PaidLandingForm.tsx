@@ -6,8 +6,8 @@ import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { PayPalButton } from "react-paypal-button-v2";
+import externshipEmailTemplate from "../utils/externship_email_template";
 import { PaystackProps } from "react-paystack/dist/types";
-import externshipEmailTemplate from "./utils/externship_email_template";
 
 const PaystackButton = dynamic(
   () => import("react-paystack").then((mod) => mod.PaystackButton),

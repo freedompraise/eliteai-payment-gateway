@@ -63,7 +63,7 @@ export default function Navbar() {
             <Link href={"/"}>
               <button
                 className={`py-2 px-4 rounded-sm text-nowrap border border-accent font-semibold text-sm md:text-base ${
-                  pathname === "/"
+                  pathname === "/" || pathname === "/paid_course"
                     ? "bg-accent text-white"
                     : "bg-transparent text-white"
                 }`}
