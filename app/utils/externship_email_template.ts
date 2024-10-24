@@ -38,8 +38,8 @@ export default function externshipEmailTemplate(
     ${couponCode}.
     Please use the code within the first 12 hours.
     
-    Externship starts immediately.
-    If you can complete your externship by the end of this month, you’ll significantly increase your chances of receiving the $50 (₦80,000) payment.
+    Internship starts immediately.
+    If you can complete your Internship by the end of this month, you’ll significantly increase your chances of receiving the $50 (₦80,000) payment.
     
     If you have any questions, feel free to reach out. We look forward to your participation and the value you’ll bring to this exciting journey!
     
