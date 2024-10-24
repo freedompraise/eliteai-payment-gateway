@@ -23,7 +23,7 @@ function Contact() {
       )}
       <button
         onClick={() => setShowButtons(!showButtons)}
-        className="flex items-center gap-x-2 font-semibold bg-white rounded-full py-4 px-4"
+        className="flex text-xs md:text-base items-center gap-x-2 font-semibold bg-white rounded-full p-2 md:p-4"
       >
         <CircleHelp /> Contact our support team.
       </button>
