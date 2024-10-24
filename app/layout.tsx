@@ -4,6 +4,7 @@ import "./globals.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Suspense } from "react";
+import Contact from "./Contact";
 
 const k2d = K2D({
   subsets: ["latin"],
@@ -23,11 +24,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={k2d.className}>
+      <body className={`${k2d.className} relative`}>
         <Suspense>
           {children}
           <ToastContainer position="top-center" theme="dark" hideProgressBar />
         </Suspense>
+        <Contact />
       </body>
     </html>
   );
