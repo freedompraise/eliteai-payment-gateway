@@ -21,6 +21,9 @@ export default function externshipEmailTemplate(
     Here is the link to the EGIT Internship Platform:
     https://www.elitegloblinternships.com
     
+    As part of Internship program , you're required to register for the free upcoming training here:-
+    https://registration.elitegloblinternships.com/free_training
+    
     Your unique referral link is included below, which you can share with friends and colleagues who may be interested in joining the program:
     ${referralLink}
     You get 20% commission upon every referral.
