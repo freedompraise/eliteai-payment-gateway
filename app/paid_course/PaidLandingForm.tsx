@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import { PayPalButton } from "react-paypal-button-v2";
 import externshipEmailTemplate from "../utils/externship_email_template";
 import { PaystackProps } from "react-paystack/dist/types";
+import Link from "next/link";
 
 const PaystackButton = dynamic(
   () => import("react-paystack").then((mod) => mod.PaystackButton),
@@ -62,6 +63,11 @@ export default function PaidLandingForm({ setShowForm }: Params) {
   const [paystackAmount, setPaystackAmount] = useState(16000);
   const [paypalAmount, setPaypalAmount] = useState(10);
   const [validating, setValidating] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
+  const handleTermsChange: any = () => {
+    setTermsAccepted((prev) => !prev);
+  };
 
   // useEffect(() => {
   //   async function checkDiscount() {
@@ -104,7 +110,11 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
       // Test the email against the regex
-      return emailRegex.test(formData.email) && formData.fullName.length > 8;
+      return (
+        emailRegex.test(formData.email) &&
+        formData.fullName.length > 8 &&
+        termsAccepted
+      );
     }
 
     return false;
@@ -287,25 +297,26 @@ export default function PaidLandingForm({ setShowForm }: Params) {
         all Africans.{" "}
       </p>
 
-      {/* <button
-        className={`p-3 w-full mt-10 rounded-sm border items-center justify-center ${
-          validating || !validateFormData()
-            ? "bg-gray-400 text-gray-700 border-gray-400 cursor-not-allowed"
-            : "hover:animate-pulse border-accent text-white"
-        }`}
-        onClick={(e) => {
-          e.preventDefault();
-          setChecking(true);
-        }}
-        disabled={validating || !validateFormData()}
-      >
-        {!validating ? "Get discount" : "Validating..."}
-      </button>
-      <p className="text-amber-400 text-xs mt-1">
-        <b>NOTE:</b> Discount is only available to students who have gone
-        through our free training.
-      </p> */}
-      {/* Buttons for Get discount and Paystack */}
+      <div className="mt-5">
+        <label className="flex items-center space-x-2 text-xs text-gray-200">
+          <input
+            type="checkbox"
+            checked={termsAccepted}
+            onChange={handleTermsChange}
+            className="form-checkbox text-accent"
+          />
+          <span>
+            I accept the{" "}
+            <Link
+              href="/terms_and_conditions"
+              className="underline text-amber-400"
+            >
+              Terms and Conditions
+            </Link>
+          </span>
+        </label>
+      </div>
+
       {validateFormData() && (
         <div className="flex flex-col md:flex-row md:space-x-5 space-y-5 md:space-y-0 mt-8">
           <button
@@ -325,27 +336,6 @@ export default function PaidLandingForm({ setShowForm }: Params) {
               text={!isSubmitting ? `Pay with Paystack` : "Processing..."}
             />
           </button>
-
-          {/* {!isSubmitting && (
-            <button
-              className="w-full h-[110px] overflow-y-clip"
-              onClick={(e) => {
-                e.preventDefault();
-              }}
-            >
-              <PayPalButton
-                amount={paypalAmount}
-                options={{
-                  clientId: process.env.NEXT_PUBLIC_PAYPAL_LIVE_CLIENT_ID,
-                  currency: "USD",
-                }}
-                onSuccess={() => handlePaymentSuccess("Paypal")}
-                onError={() =>
-                  toast.error("Payment process was not completed at this time.")
-                }
-              />
-            </button>
-          )} */}
         </div>
       )}
     </form>
