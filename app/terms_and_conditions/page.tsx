@@ -114,8 +114,9 @@ export default function TermsAndConditions() {
         <ul>
           <li>
             6.1. Elite Global Intelligence Technology reserves the right to
-            terminate a Participant's involvement in the Program for failure to
-            meet the requirements, violation of policies, or misconduct.
+            terminate a Participant&quot;s involvement in the Program for
+            failure to meet the requirements, violation of policies, or
+            misconduct.
           </li>
           <li>
             6.2. Participants may withdraw from the Program at any time by
@@ -152,14 +153,15 @@ export default function TermsAndConditions() {
         <h2>9. Data Protection</h2>
         <ul>
           <li>
-            9.1. Participants' personal data collected during registration and
-            participation in the Program will be processed in accordance with
-            applicable data protection laws.
+            9.1. Participants&quot; personal data collected during registration
+            and participation in the Program will be processed in accordance
+            with applicable data protection laws.
           </li>
           <li>
-            9.2. Elite Global Intelligence Technology will use Participants'
-            data only for purposes related to the Program, including providing
-            information on training, internships, and future opportunities.
+            9.2. Elite Global Intelligence Technology will use
+            Participants&quot; data only for purposes related to the Program,
+            including providing information on training, internships, and future
+            opportunities.
           </li>
         </ul>
 
