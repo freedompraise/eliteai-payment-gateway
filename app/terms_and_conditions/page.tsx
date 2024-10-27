@@ -10,11 +10,12 @@ export default function TermsAndConditions() {
         </h1>
 
         <p>
-          This Terms and Conditions Agreement ("Agreement") governs the
-          participation of individuals ("Participants") in the Elite Global
-          Intelligence Technology-powered Training Program and Paid Internship
-          ("Program"). By registering for the Program, Participants agree to be
-          bound by the terms and conditions outlined herein.
+          This Terms and Conditions Agreement (&quot;Agreement&quot;) governs
+          the participation of individuals (&quot;Participants&quot;) in the
+          Elite Global Intelligence Technology-powered Training Program and Paid
+          Internship (&quot;Program&quot;). By registering for the Program,
+          Participants agree to be bound by the terms and conditions outlined
+          herein.
         </p>
 
         <h2>1. Eligibility</h2>
