@@ -39,7 +39,12 @@ export default function externshipEmailTemplate(
     Please use the code within the first 12 hours.
     
     Internship starts immediately.
-    If you can complete your Internship by the end of this month, you’ll significantly increase your chances of receiving the $50 (₦80,000) payment.
+
+    Criteria for qualifying for the #80,000 cash reward is:
+
+    - During the Internship task, have a high score (90% and above)
+    - Post/share your learning journey on 2 social media platforms daily excluding weekends.
+    - Complete your Internship projects in 2 weeks, so you can proceed with the other phase of the Internship.
     
     If you have any questions, feel free to reach out. We look forward to your participation and the value you’ll bring to this exciting journey!
     
