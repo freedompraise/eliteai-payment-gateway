@@ -36,7 +36,7 @@ export default function externshipEmailTemplate(
     
     Use the following coupon code to unlock your externship:
     ${couponCode}.
-    Please use the code within the first 12 hours.
+    Please use the code within the first 24 hours.
     
     Internship starts immediately.
 
@@ -45,6 +45,8 @@ export default function externshipEmailTemplate(
     - During the Internship task, have a high score (90% and above)
     - Post/share your learning journey on 2 social media platforms daily excluding weekends.
     - Complete your Internship projects in 2 weeks, so you can proceed with the other phase of the Internship.
+
+     The Second phase entails a two weeks period of building Portfolio projects, and Interacting with mentors.
     
     If you have any questions, feel free to reach out. We look forward to your participation and the value you’ll bring to this exciting journey!
     
