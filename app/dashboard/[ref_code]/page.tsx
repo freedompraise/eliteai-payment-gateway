@@ -74,7 +74,7 @@ export default function Dashboard() {
         const formattedData = rowData.map((item: string[]) => ({
           full_name: item[1],
           program: program == 0 ? item[6] : item[3],
-          registration_date: program == 0 ? item[13] : item[4],
+          registration_date: program == 0 ? item[13] : item[5],
         }));
         setData(formattedData);
         setIsLoading(false);
@@ -133,6 +133,7 @@ export default function Dashboard() {
             >
               <option value="0">Free Training Program</option>
               <option value="1">Internship Program</option>
+              <option value="2">Internship Program</option>
             </select>
           </div>
         </div>

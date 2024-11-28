@@ -32,7 +32,7 @@ export async function GET(
   });
 
   try {
-    console.log("in here`");
+    console.log("in here: ", id);
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: process.env.SHEET_ID || "",
       range: "Sheet3!A:H",
@@ -44,9 +44,12 @@ export async function GET(
     }
 
     const row = rows.filter((row) => row[7] === id);
+
     if (!row) {
       return NextResponse.json({ error: "Row not found" }, { status: 404 });
     }
+
+    console.log("row: ", row);
 
     return NextResponse.json(row);
   } catch (error) {
