@@ -26,8 +26,7 @@ export default function Home() {
               <p className="text-xs md:text-sm pt-4 w-[80%] text-gray-300">
                 Elite Global AI invites you to explore the transformative world
                 of artificial intelligence in diverse field such as Digital
-                marketing, Content creation, Business Analytics, Data Analytics
-                and Education.
+                marketing, Content creation, Business Analytics And Data Analytics.
               </p>
               <div className="flex md:hidden mt-8">
                 <div
