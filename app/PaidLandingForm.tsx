@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X } from "lucide-react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { format } from "date-fns";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
-import { PayPalButton } from "react-paypal-button-v2";
 import { PaystackProps } from "react-paystack/dist/types";
 import externshipEmailTemplate from "./utils/externship_email_template";
 import Link from "next/link";
@@ -21,23 +20,15 @@ interface Params {
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-let courses = [{
-    code: "7937",
-    course: "Virtual Assistant Internship – Mastering Remote Support",
-  },
+let courses = [
+  { code: "7937", course: "Virtual Assistant Internship – Mastering Remote Support" },
   { code: "7934", course: "Data Analysis And Business Analysis Internship" },
   { code: "7915", course: "Content Creation Internship" },
   { code: "7447", course: "Digital Marketing Internship" },
 ];
 
 function truncateText(text: string, maxLength: number) {
-  // If the text is shorter or equal to the max length, return it as is
-  if (text.length <= maxLength) {
-    return text;
-  }
-
-  // Otherwise, truncate and add ellipsis
-  return text.slice(0, maxLength) + "...";
+  return text.length <= maxLength ? text : text.slice(0, maxLength) + "...";
 }
 
 export default function PaidLandingForm({ setShowForm }: Params) {
@@ -48,139 +39,59 @@ export default function PaidLandingForm({ setShowForm }: Params) {
   const [formData, setFormData] = useState({
     email: "",
     fullName: "",
+    city: "",
+    country: "",
+    linkedinURL: "",
+    passportDriveLink: "",
     programs: courses[0].code, // default program value
   });
   const [errors, setErrors] = useState({ email: "", fullName: "" });
-  const [checking, setChecking] = useState(false);
   const [paystackAmount, setPaystackAmount] = useState(16000);
   const [paypalAmount, setPaypalAmount] = useState(10);
-  const [validating, setValidating] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
 
-  const handleInputChange = async (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    // setPaystackAmount(24000);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   function validateFormData() {
-    if (formData.email && formData.fullName) {
-      // Regular expression for validating an email
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-      // Test the email against the regex
-      return (
-        emailRegex.test(formData.email) &&
-        formData.fullName.length > 8 &&
-        termsAccepted
-      );
-    }
-
-    return false;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return (
+      emailRegex.test(formData.email) &&
+      formData.fullName.length > 8 &&
+      formData.city &&
+      formData.country &&
+      formData.linkedinURL &&
+      formData.passportDriveLink &&
+      termsAccepted
+    );
   }
 
   const handleTermsChange: any = () => {
     setTermsAccepted((prev) => !prev);
   };
 
-  async function sendEmail(
-    to: string,
-    subject: string,
-    ref: string
-    // html: string
-  ) {
-    let program = courses.find((course) => formData.programs == course.code)
-      ?.course;
-    let text = externshipEmailTemplate(
-      formData.fullName,
-      program ? program : "",
-      `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
-      "text"
-    );
-    let html = externshipEmailTemplate(
-      formData.fullName,
-      program ? program : "",
-      `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
-      "html"
-    );
-    const response = await fetch("/api/send-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ to, subject, text, html }),
-    });
-
-    if (!response.ok) {
-      // Handle errors accordingly
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Failed to send email");
-    }
-
-    const data = await response.json();
-    return data;
-  }
-
-  const handlePaymentSuccess = async (platform: string) => {
-    const currentDate = new Date();
-    const id = uuidv4();
-    setIsSubmitting(true);
-    toast.info("Submitting...");
-
-    const values = [
-      id,
-      formData.fullName,
-      formData.email,
-      courses.find((course) => course.code == formData.programs)?.course,
-      formData.programs,
-      format(currentDate, "MMMM d, yyyy"),
-      platform,
-    ];
-
-    const response = await fetch("/api/update-sheet-3", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ values, ref }),
-    });
-
-    if (response.ok) {
-      let program = courses.find((course) => formData.programs == course.code)
-        ?.course;
-      await sendEmail(
-        formData.email,
-        "Congratulations on Your Internship!",
-        id
-      );
-      toast.success("You've been enrolled successfully");
-      setIsSubmitting(false);
-      setFormData({ email: "", fullName: "", programs: "Education" }); // Reset form
-      setShowForm(false);
-    } else {
-      setIsSubmitting(false);
-      toast.error("Sorry we couldn't complete your enrollment at this time.");
-    }
-  };
-
   const paystackConfig = {
     metadata: {
       custom_fields: [
         {
-          display_name: "values",
-          variable_name: "values",
-          value: [
-            uuidv4(),
-            formData.fullName,
-            formData.email,
-            courses.find((course) => course.code == formData.programs)?.course,
-            formData.programs,
-            format(new Date(), "MMMM d, yyyy"),
-            "paystack",
+          display_name: "User Details",
+          variable_name: "user_details",
+          value: {
+            id: uuidv4(),
+            fullName: formData.fullName,
+            email: formData.email,
+            city: formData.city,
+            country: formData.country,
+            linkedinURL: formData.linkedinURL,
+            passportDriveLink: formData.passportDriveLink,
+            program: courses.find((course) => course.code === formData.programs)?.course,
+            programCode: formData.programs,
+            registrationDate: format(new Date(), "MMMM d, yyyy"),
+            paymentPlatform: "Paystack",
             ref,
-          ],
+          },
         },
       ],
     },
@@ -190,8 +101,6 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     onSuccess: () => toast.success("Payment successful"),
     onClose: () => toast.info("Payment process was interrupted"),
   };
-
-  // console.log(validateFormData() && validating);
 
   return (
     <form className="rounded-sm h-max py-10 md:py-0 pb-20 md:pb-0">
@@ -211,6 +120,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       </h1>
       <div className="md:px-0 rounded-sm overflow-clip">
         <div className="flex flex-col md:flex-row ">
+          {/* Form Fields */}
           <div className="border p-2 space-y-1 w-full flex flex-col border-accent">
             <label className="text-xs">Email</label>
             <input
@@ -222,7 +132,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
             />
           </div>
           <div className="border w-full p-2 space-y-1 flex flex-col border-accent">
-            <label className="text-xs">Full name</label>
+            <label className="text-xs">Full Name</label>
             <input
               type="text"
               name="fullName"
@@ -231,9 +141,49 @@ export default function PaidLandingForm({ setShowForm }: Params) {
               className="text-sm outline-none bg-transparent text-white border-0"
             />
           </div>
+          <div className="border p-2 space-y-1 flex flex-col border-accent">
+            <label className="text-xs">City</label>
+            <input
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={handleInputChange}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
+          <div className="border p-2 space-y-1 flex flex-col border-accent">
+            <label className="text-xs">Country</label>
+            <input
+              type="text"
+              name="country"
+              value={formData.country}
+              onChange={handleInputChange}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
+          <div className="border p-2 space-y-1 flex flex-col border-accent">
+            <label className="text-xs">LinkedIn URL</label>
+            <input
+              type="text"
+              name="linkedinURL"
+              value={formData.linkedinURL}
+              onChange={handleInputChange}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
+          <div className="border p-2 space-y-1 flex flex-col border-accent">
+            <label className="text-xs">Drive Link to Passport Photograph</label>
+            <input
+              type="text"
+              name="passportDriveLink"
+              value={formData.passportDriveLink}
+              onChange={handleInputChange}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
           <div className="border p-2 w-full space-y-1 flex flex-col border-accent">
             <label htmlFor="programs" className="text-xs">
-              Pick a program
+              Pick a Program
             </label>
             <select
               id="programs"
@@ -251,17 +201,9 @@ export default function PaidLandingForm({ setShowForm }: Params) {
           </div>
         </div>
       </div>
-      <div className="flex space-x-1">
-        {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
-        {errors.fullName && (
-          <p className="text-red-500 text-xs">{errors.fullName}</p>
-        )}
-      </div>
       <p className="text-xs mt-3 text-gray-100">
-        This program is a PAID Internship placement program. Training is open to
-        all Africans.{" "}
+        This program is a PAID Internship placement program. Training is open to all Africans.{" "}
       </p>
-
       <div className="mt-5">
         <label className="flex items-center space-x-2 text-xs text-gray-200">
           <input
@@ -292,12 +234,12 @@ export default function PaidLandingForm({ setShowForm }: Params) {
           >
             <PaystackButton
               className={`p-3 w-full rounded-sm items-center justify-center ${
-                isSubmitting || validating
+                isSubmitting
                   ? "bg-gray-400 text-gray-700 cursor-not-allowed"
                   : "hover:animate-pulse bg-accent text-white"
               }`}
               {...paystackConfig}
-              disabled={isSubmitting || validating}
+              disabled={isSubmitting}
               text={!isSubmitting ? `Pay with Paystack` : "Processing..."}
             />
           </button>
