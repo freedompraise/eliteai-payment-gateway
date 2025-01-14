@@ -21,17 +21,11 @@ interface Params {
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-let courses = [
-  { code: "8010", course: "Education Internship" },
-  { code: "8009", course: "IT Support Internship" },
-  { code: "7970", course: "Project Management Internship" },
-  {
+let courses = [{
     code: "7937",
     course: "Virtual Assistant Internship – Mastering Remote Support",
   },
-  { code: "7936", course: "Community Management Internship" },
-  { code: "7935", course: "Business Analysis Internship" },
-  { code: "7934", course: "Data Analysis Internship" },
+  { code: "7934", course: "Data Analysis And Business Analysis Internship" },
   { code: "7915", course: "Content Creation Internship" },
   { code: "7447", course: "Digital Marketing Internship" },
 ];
