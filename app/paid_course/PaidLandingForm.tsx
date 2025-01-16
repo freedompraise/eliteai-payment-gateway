@@ -53,12 +53,28 @@ export default function PaidLandingForm({ setShowForm }: Params) {
   console.log("ref: ", ref);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formTouched, setFormTouched] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     fullName: "",
     programs: courses[0].code, // default program value
+    age: 0,
+    city: "",
+    country: "",
+    linkedin: "",
+    phone_no: "",
   });
-  const [errors, setErrors] = useState({ email: "", fullName: "" });
+  const [errors, setErrors] = useState({
+    email: "",
+    fullName: "",
+    age: "",
+    city: "",
+    country: "",
+    linkedin: "",
+    phone_no: "",
+    terms: "",
+  });
+  const [isValid, setIsValid] = useState(false);
   const [checking, setChecking] = useState(false);
   const [paystackAmount, setPaystackAmount] = useState(16000);
   const [paypalAmount, setPaypalAmount] = useState(10);
@@ -102,22 +118,68 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     // setPaystackAmount(24000);
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setFormTouched(true);
   };
 
-  function validateFormData() {
-    if (formData.email && formData.fullName) {
-      // Regular expression for validating an email
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  useEffect(() => {
+    if (formTouched) {
+      validateFormData();
+    }
+  }, [formData, termsAccepted]);
 
-      // Test the email against the regex
-      return (
-        emailRegex.test(formData.email) &&
-        formData.fullName.length > 8 &&
-        termsAccepted
-      );
+  function validateFormData() {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phoneRegex = /^[0-9]{10,15}$/;
+
+    let newErrors = {
+      email: "",
+      fullName: "",
+      age: "",
+      city: "",
+      country: "",
+      linkedin: "",
+      phone_no: "",
+      terms: "",
+    };
+
+    if (!formData.email || !emailRegex.test(formData.email)) {
+      newErrors.email = "Invalid email address.";
     }
 
-    return false;
+    if (!formData.fullName || formData.fullName.length <= 8) {
+      newErrors.fullName = "Full name must be more than 8 characters.";
+    }
+
+    if (!formData.age || formData.age <= 10) {
+      newErrors.age = "Age must be greater than 10.";
+    }
+
+    if (!formData.city) {
+      newErrors.city = "City is required.";
+    }
+
+    if (!formData.country) {
+      newErrors.country = "Country is required.";
+    }
+
+    if (!formData.linkedin) {
+      newErrors.linkedin = "LinkedIn profile is required.";
+    }
+
+    if (!formData.phone_no || !phoneRegex.test(formData.phone_no)) {
+      newErrors.phone_no = "Invalid phone number. Must be 10-15 digits.";
+    }
+
+    if (!termsAccepted) {
+      newErrors.terms = "You must accept the terms and conditions.";
+    }
+
+    // Update errors state
+    setErrors(newErrors);
+
+    // Check if form is valid using `newErrors`
+    const isValid = Object.values(newErrors).every((error) => error === "");
+    setIsValid(isValid);
   }
 
   async function sendEmail(
@@ -172,6 +234,11 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       formData.programs,
       format(currentDate, "MMMM d, yyyy"),
       platform,
+      formData.age,
+      formData.city,
+      formData.country,
+      formData.linkedin,
+      formData.phone_no,
     ];
 
     const response = await fetch("/api/update-sheet-3", {
@@ -192,7 +259,16 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       );
       toast.success("You've been enrolled successfully");
       setIsSubmitting(false);
-      setFormData({ email: "", fullName: "", programs: "Education" }); // Reset form
+      setFormData({
+        email: "",
+        fullName: "",
+        programs: "Education",
+        age: 0,
+        city: "",
+        country: "",
+        linkedin: "",
+        phone_no: "",
+      }); // Reset form
       setShowForm(false);
     } else {
       setIsSubmitting(false);
@@ -215,6 +291,11 @@ export default function PaidLandingForm({ setShowForm }: Params) {
             format(new Date(), "MMMM d, yyyy"),
             "paystack",
             ref,
+            formData.age,
+            formData.city,
+            formData.country,
+            formData.linkedin,
+            formData.phone_no,
           ],
         },
       ],
@@ -244,7 +325,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       <h1 className="flex md:hidden text-2xl pt-5 pb-8">
         Let&apos;s get you registered{" "}
       </h1>
-      <div className="md:px-0 rounded-sm overflow-clip">
+      <div className="md:px-0 flex flex-col rounded-sm overflow-clip">
         <div className="flex flex-col md:flex-row ">
           <div className="border p-2 space-y-1 w-full flex flex-col border-accent">
             <label className="text-xs">Email</label>
@@ -285,11 +366,76 @@ export default function PaidLandingForm({ setShowForm }: Params) {
             </select>
           </div>
         </div>
+        <div className="flex flex-col md:flex-row ">
+          <div className="border p-2 space-y-1 w-full flex flex-col border-accent">
+            <label className="text-xs">Age</label>
+            <input
+              type="number"
+              name="age"
+              value={formData.age}
+              onChange={handleInputChange}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
+          <div className="border w-full p-2 space-y-1 flex flex-col border-accent">
+            <label className="text-xs">City</label>
+            <input
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={handleInputChange}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
+          <div className="border w-full p-2 space-y-1 flex flex-col border-accent">
+            <label className="text-xs">Country</label>
+            <input
+              type="text"
+              name="country"
+              value={formData.country}
+              onChange={handleInputChange}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
+        </div>
+        <div className="flex flex-col md:flex-row ">
+          <div className="border p-2 space-y-1 w-full flex flex-col border-accent">
+            <label className="text-xs">Linkedin URL</label>
+            <input
+              type="text"
+              name="linkedin"
+              value={formData.linkedin}
+              onChange={handleInputChange}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
+          <div className="border w-full p-2 space-y-1 flex flex-col border-accent">
+            <label className="text-xs">Phone number</label>
+            <input
+              type="tel"
+              name="phone_no"
+              value={formData.phone_no}
+              onChange={handleInputChange}
+              className="text-sm outline-none bg-transparent text-white border-0"
+            />
+          </div>
+        </div>
       </div>
-      <div className="flex space-x-1">
+      <div className="flex flex-col space-y-1 mt-1">
         {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
         {errors.fullName && (
           <p className="text-red-500 text-xs">{errors.fullName}</p>
+        )}
+        {errors.age && <p className="text-red-500 text-xs">{errors.age}</p>}
+        {errors.city && <p className="text-red-500 text-xs">{errors.city}</p>}
+        {errors.country && (
+          <p className="text-red-500 text-xs">{errors.country}</p>
+        )}
+        {errors.linkedin && (
+          <p className="text-red-500 text-xs">{errors.linkedin}</p>
+        )}
+        {errors.phone_no && (
+          <p className="text-red-500 text-xs">{errors.phone_no}</p>
         )}
       </div>
       <p className="text-xs mt-3 text-gray-100">
@@ -317,7 +463,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
         </label>
       </div>
 
-      {validateFormData() && (
+      {isValid && (
         <div className="flex flex-col md:flex-row md:space-x-5 space-y-5 md:space-y-0 mt-8">
           <button
             className="w-full flex items-start"
