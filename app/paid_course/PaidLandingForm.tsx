@@ -22,15 +22,11 @@ interface Params {
 }
 
 let courses = [
-  { code: "8010", course: "Education Internship" },
-  { code: "8009", course: "IT Support Internship" },
-  { code: "7970", course: "Project Management Internship" },
   {
     code: "7937",
     course: "Virtual Assistant Internship – Mastering Remote Support",
   },
-  { code: "7936", course: "Community Management Internship" },
-  { code: "7935", course: "Business Analysis Internship" },
+
   { code: "7934", course: "Data Analysis Internship" },
   { code: "7915", course: "Content Creation Internship" },
   { code: "7447", course: "Digital Marketing Internship" },
@@ -290,12 +286,12 @@ export default function PaidLandingForm({ setShowForm }: Params) {
             formData.programs,
             format(new Date(), "MMMM d, yyyy"),
             "paystack",
-            ref,
             formData.age,
             formData.city,
             formData.country,
             formData.linkedin,
             formData.phone_no,
+            ref,
           ],
         },
       ],
