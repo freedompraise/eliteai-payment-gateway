@@ -31,7 +31,7 @@ export async function POST(request: Request) {
         valueInputOption: "RAW",
         range: "Sheet3!A:H",
         requestBody: {
-          values: [[...values, ref]],
+          values: [[...values.splice(0, 7), ref, ...values]],
         },
       });
       return NextResponse.json(response.data);
