@@ -147,10 +147,6 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     // Check if form is valid using `newErrors`
     const isValid = Object.values(newErrors).every((error) => error === "");
     setIsValid(isValid);
-
-    if (isValid) {
-      console.log("form inputs valid");
-    }
   }
 
   const handleTermsChange: any = () => {
@@ -281,8 +277,6 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     onSuccess: () => toast.success("Payment successful"),
     onClose: () => toast.info("Payment process was interrupted"),
   };
-
-  // console.log(validateFormData() && validating);
 
   return (
     <form className="rounded-sm h-max py-10 md:py-0 pb-20 md:pb-0">
