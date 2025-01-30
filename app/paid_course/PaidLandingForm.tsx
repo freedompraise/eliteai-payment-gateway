@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { CheckCheck, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { format } from "date-fns";
@@ -71,7 +71,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     terms: "",
   });
   const [isValid, setIsValid] = useState(false);
-  const [checking, setChecking] = useState(false);
+  const [getFullPogram, setGetFullPogram] = useState(true);
   const [paystackAmount, setPaystackAmount] = useState(16000);
   const [paypalAmount, setPaypalAmount] = useState(10);
   const [validating, setValidating] = useState(false);
@@ -81,37 +81,9 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     setTermsAccepted((prev) => !prev);
   };
 
-  // useEffect(() => {
-  //   async function checkDiscount() {
-  //     setValidating(true);
-  //     if (formData.email && formData.fullName) {
-  //       toast.info("Validating...");
-  //       const response = await fetch(`/api/get-row-by-email/${formData.email}`);
-
-  //       if (response.ok && response.status !== 404) {
-  //         setPaystackAmount(16000);
-  //         setPaypalAmount(10);
-  //         toast.success("Discount applied successfully");
-  //       } else {
-  //         toast.error(
-  //           "Sorry the email you've provided wasn't registered for our free training"
-  //         );
-  //       }
-  //       setChecking(false);
-  //       setValidating(false);
-  //     } else {
-  //       toast.error("Please make sure each form field is filled properly");
-  //     }
-  //   }
-  //   if (checking) {
-  //     checkDiscount();
-  //   }
-  // }, [checking, formData]);
-
   const handleInputChange = async (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    // setPaystackAmount(24000);
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setFormTouched(true);
@@ -215,62 +187,6 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     const data = await response.json();
     return data;
   }
-
-  const handlePaymentSuccess = async (platform: string) => {
-    const currentDate = new Date();
-    const id = uuidv4();
-    setIsSubmitting(true);
-    toast.info("Submitting...");
-
-    const values = [
-      id,
-      formData.fullName,
-      formData.email,
-      courses.find((course) => course.code == formData.programs)?.course,
-      formData.programs,
-      format(currentDate, "MMMM d, yyyy"),
-      platform,
-      formData.age,
-      formData.city,
-      formData.country,
-      formData.linkedin,
-      formData.phone_no,
-    ];
-
-    const response = await fetch("/api/update-sheet-3", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ values, ref }),
-    });
-
-    if (response.ok) {
-      let program = courses.find((course) => formData.programs == course.code)
-        ?.course;
-      await sendEmail(
-        formData.email,
-        "Congratulations on Your Internship!",
-        id
-      );
-      toast.success("You've been enrolled successfully");
-      setIsSubmitting(false);
-      setFormData({
-        email: "",
-        fullName: "",
-        programs: "Education",
-        age: 0,
-        city: "",
-        country: "",
-        linkedin: "",
-        phone_no: "",
-      }); // Reset form
-      setShowForm(false);
-    } else {
-      setIsSubmitting(false);
-      toast.error("Sorry we couldn't complete your enrollment at this time.");
-    }
-  };
 
   const paystackConfig = {
     metadata: {
@@ -457,6 +373,45 @@ export default function PaidLandingForm({ setShowForm }: Params) {
             </Link>
           </span>
         </label>
+      </div>
+
+      <div className="flex flex-col lg:flex-row space-y-10 lg:space-y-0 lg:space-x-10 mt-10">
+        <button
+          type="button"
+          onClick={() => {
+            setGetFullPogram(!getFullPogram);
+            setPaystackAmount(16000);
+            setPaypalAmount(10);
+          }}
+          className={`border-2 px-8 py-3 space-x-3 flex text-center items-center ${
+            !getFullPogram
+              ? "border-accent text-white"
+              : "border-black/10 text-gray-400"
+          }`}
+        >
+          <CheckCheck
+            className={`${!getFullPogram ? "text-accent" : "text-gray-400"}`}
+          />
+          <p>Continue with Internship Training Program</p>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setGetFullPogram(!getFullPogram);
+            setPaystackAmount(32000);
+            setPaypalAmount(20);
+          }}
+          className={`border-2 px-8 py-3 space-x-3 flex text-center items-center ${
+            getFullPogram
+              ? "border-accent text-white"
+              : "border-black/10 text-gray-400"
+          }`}
+        >
+          <CheckCheck
+            className={`${getFullPogram ? "text-accent" : "text-gray-400"}`}
+          />
+          <p>Get Full Internship Program</p>
+        </button>
       </div>
 
       {isValid && (

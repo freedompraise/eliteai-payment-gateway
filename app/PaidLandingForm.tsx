@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { CheckCheck, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { format } from "date-fns";
@@ -69,7 +69,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     terms: "",
   });
   const [isValid, setIsValid] = useState(false);
-  const [checking, setChecking] = useState(false);
+  const [getFullPogram, setGetFullPogram] = useState(true);
   const [paystackAmount, setPaystackAmount] = useState(16000);
   const [paypalAmount, setPaypalAmount] = useState(10);
   const [validating, setValidating] = useState(false);
@@ -268,7 +268,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       ],
     },
     email: formData.email,
-    amount: paystackAmount * 100, // Example amount in kobo
+    amount: paystackAmount * 100, // Example amount in kobo //convert this to naira first
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_LIVE_PUBLIC_KEY || "",
     onSuccess: () => toast.success("Payment successful"),
     onClose: () => toast.info("Payment process was interrupted"),
@@ -426,6 +426,45 @@ export default function PaidLandingForm({ setShowForm }: Params) {
             </Link>
           </span>
         </label>
+      </div>
+
+      <div className="flex flex-col lg:flex-row space-y-10 lg:space-y-0 lg:space-x-10 mt-10">
+        <button
+          type="button"
+          onClick={() => {
+            setGetFullPogram(!getFullPogram);
+            setPaystackAmount(16000);
+            setPaypalAmount(10);
+          }}
+          className={`border-2 px-8 py-3 space-x-3 flex text-center items-center ${
+            !getFullPogram
+              ? "border-accent text-white"
+              : "border-black/10 text-gray-400"
+          }`}
+        >
+          <CheckCheck
+            className={`${!getFullPogram ? "text-accent" : "text-gray-400"}`}
+          />
+          <p>Continue with Internship Training Program</p>
+        </button>
+        <button
+          type="button"
+          onClick={() => {
+            setGetFullPogram(!getFullPogram);
+            setPaystackAmount(32000);
+            setPaypalAmount(20);
+          }}
+          className={`border-2 px-8 py-3 space-x-3 flex text-center items-center ${
+            getFullPogram
+              ? "border-accent text-white"
+              : "border-black/10 text-gray-400"
+          }`}
+        >
+          <CheckCheck
+            className={`${getFullPogram ? "text-accent" : "text-gray-400"}`}
+          />
+          <p>Get Full Internship Program</p>
+        </button>
       </div>
 
       {isValid && (
