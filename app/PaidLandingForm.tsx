@@ -187,6 +187,11 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     return data;
   }
 
+  useEffect(() => {
+    getFullPogram ? setPaystackAmount(48000) : setPaystackAmount(16000);
+    getFullPogram ? setPaypalAmount(30) : setPaypalAmount(10);
+  }, []);
+
   const handlePaymentSuccess = async (platform: string) => {
     const currentDate = new Date();
     const id = uuidv4();
@@ -277,8 +282,11 @@ export default function PaidLandingForm({ setShowForm }: Params) {
   return (
     <form className="rounded-sm h-max py-10 md:py-0 pb-20 md:pb-0">
       <p className="text-xl mb-10 font-semibold">
-        <span className="text-sm text-amber-400">Amount Payable:</span>{" "}
-        {`N${paystackAmount}($${paypalAmount})`}
+        <span className="text-sm text-amber-400">
+          Amount Payable for{" "}
+          {getFullPogram ? "Full Internship Program" : "AI Training Program"}:
+        </span>{" "}
+        {`N${paystackAmount} ($${paypalAmount})`}
       </p>
       <button
         type="button"
@@ -445,14 +453,14 @@ export default function PaidLandingForm({ setShowForm }: Params) {
           <CheckCheck
             className={`${!getFullPogram ? "text-accent" : "text-gray-400"}`}
           />
-          <p>Continue with Internship Training Program</p>
+          <p>Continue with AI Training Program</p>
         </button>
         <button
           type="button"
           onClick={() => {
             setGetFullPogram(!getFullPogram);
-            setPaystackAmount(32000);
-            setPaypalAmount(20);
+            setPaystackAmount(48000);
+            setPaypalAmount(30);
           }}
           className={`border-2 px-8 py-3 space-x-3 flex text-center items-center ${
             getFullPogram
