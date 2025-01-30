@@ -285,13 +285,13 @@ export default function PaidLandingForm({ setShowForm }: Params) {
         <span className="text-sm text-amber-400">
           Amount Payable for Full Internship Program:
         </span>{" "}
-        N48000($30)
+        ($30)
       </p>
       <p className="text-xl mb-10 font-semibold">
         <span className="text-sm text-amber-400">
           Amount Payable for AI Training Program:
         </span>{" "}
-        N16000($10)
+        ($10)
       </p>
       <button
         type="button"
