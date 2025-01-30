@@ -281,12 +281,17 @@ export default function PaidLandingForm({ setShowForm }: Params) {
 
   return (
     <form className="rounded-sm h-max py-10 md:py-0 pb-20 md:pb-0">
+      <p className="text-xl font-semibold">
+        <span className="text-sm text-amber-400">
+          Amount Payable for Full Internship Program:
+        </span>{" "}
+        N48000($30)
+      </p>
       <p className="text-xl mb-10 font-semibold">
         <span className="text-sm text-amber-400">
-          Amount Payable for{" "}
-          {getFullPogram ? "Full Internship Program" : "AI Training Program"}:
+          Amount Payable for AI Training Program:
         </span>{" "}
-        {`N${paystackAmount} ($${paypalAmount})`}
+        N16000($10)
       </p>
       <button
         type="button"
