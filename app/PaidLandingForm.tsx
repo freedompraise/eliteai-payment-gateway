@@ -69,7 +69,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     terms: "",
   });
   const [isValid, setIsValid] = useState(false);
-  const [getFullPogram, setGetFullPogram] = useState(true);
+  const [getFullProgram, setGetFullProgram] = useState(true);
   const [paystackAmount, setPaystackAmount] = useState(16000);
   const [paypalAmount, setPaypalAmount] = useState(10);
   const [validating, setValidating] = useState(false);
@@ -149,102 +149,10 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     setTermsAccepted((prev) => !prev);
   };
 
-  async function sendEmail(
-    to: string,
-    subject: string,
-    ref: string
-    // html: string
-  ) {
-    let program = courses.find((course) => formData.programs == course.code)
-      ?.course;
-    let text = externshipEmailTemplate(
-      formData.fullName,
-      `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
-      "text"
-    );
-    let html = externshipEmailTemplate(
-      formData.fullName,
-      `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
-      "html"
-    );
-    const response = await fetch("/api/send-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ to, subject, text, html }),
-    });
-
-    if (!response.ok) {
-      // Handle errors accordingly
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Failed to send email");
-    }
-
-    const data = await response.json();
-    return data;
-  }
-
   useEffect(() => {
-    getFullPogram ? setPaystackAmount(48000) : setPaystackAmount(16000);
-    getFullPogram ? setPaypalAmount(30) : setPaypalAmount(10);
+    getFullProgram ? setPaystackAmount(48000) : setPaystackAmount(16000);
+    getFullProgram ? setPaypalAmount(30) : setPaypalAmount(10);
   }, []);
-
-  const handlePaymentSuccess = async (platform: string) => {
-    const currentDate = new Date();
-    const id = uuidv4();
-    setIsSubmitting(true);
-    toast.info("Submitting...");
-
-    const values = [
-      id,
-      formData.fullName,
-      formData.email,
-      courses.find((course) => course.code == formData.programs)?.course,
-      formData.programs,
-      format(currentDate, "MMMM d, yyyy"),
-      platform,
-      formData.age,
-      formData.city,
-      formData.country,
-      formData.linkedin,
-      formData.phone_no,
-    ];
-
-    const response = await fetch("/api/update-sheet-3", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ values, ref }),
-    });
-
-    if (response.ok) {
-      let program = courses.find((course) => formData.programs == course.code)
-        ?.course;
-      await sendEmail(
-        formData.email,
-        "Congratulations on Your Internship!",
-        id
-      );
-      toast.success("You've been enrolled successfully");
-      setIsSubmitting(false);
-      setFormData({
-        email: "",
-        fullName: "",
-        programs: "Education",
-        age: 0,
-        city: "",
-        country: "",
-        linkedin: "",
-        phone_no: "",
-      }); // Reset form
-      setShowForm(false);
-    } else {
-      setIsSubmitting(false);
-      toast.error("Sorry we couldn't complete your enrollment at this time.");
-    }
-  };
 
   const paystackConfig = {
     metadata: {
@@ -266,6 +174,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
             formData.country,
             formData.linkedin,
             formData.phone_no,
+            getFullProgram,
           ],
         },
       ],
@@ -443,36 +352,36 @@ export default function PaidLandingForm({ setShowForm }: Params) {
         <button
           type="button"
           onClick={() => {
-            setGetFullPogram(!getFullPogram);
+            setGetFullProgram(!getFullProgram);
             setPaystackAmount(16000);
             setPaypalAmount(10);
           }}
           className={`border-2 px-8 py-3 space-x-3 flex text-center items-center ${
-            !getFullPogram
+            !getFullProgram
               ? "border-accent text-white"
               : "border-black/10 text-gray-400"
           }`}
         >
           <CheckCheck
-            className={`${!getFullPogram ? "text-accent" : "text-gray-400"}`}
+            className={`${!getFullProgram ? "text-accent" : "text-gray-400"}`}
           />
           <p>Continue with AI Training Program</p>
         </button>
         <button
           type="button"
           onClick={() => {
-            setGetFullPogram(!getFullPogram);
+            setGetFullProgram(!getFullProgram);
             setPaystackAmount(48000);
             setPaypalAmount(30);
           }}
           className={`border-2 px-8 py-3 space-x-3 flex text-center items-center ${
-            getFullPogram
+            getFullProgram
               ? "border-accent text-white"
               : "border-black/10 text-gray-400"
           }`}
         >
           <CheckCheck
-            className={`${getFullPogram ? "text-accent" : "text-gray-400"}`}
+            className={`${getFullProgram ? "text-accent" : "text-gray-400"}`}
           />
           <p>Get Full Internship Program</p>
         </button>

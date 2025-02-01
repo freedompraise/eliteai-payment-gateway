@@ -57,6 +57,11 @@ export async function POST(request: NextRequest) {
         const values = customField.value;
         const ref = values.splice(values.length - 1);
         const ref_val = ref[0] ? ref[0] : "";
+        const fullProgram = ref
+          ? ref[ref.length - 1]
+            ? ref[ref.length - 1]
+            : ""
+          : "";
 
         console.log("value, ref: ", values, ref);
 
@@ -77,7 +82,12 @@ export async function POST(request: NextRequest) {
           let text = externshipEmailTemplate(
             values[1],
             `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
-            "text"
+            "text",
+            program
+              ? `${program}(${
+                  fullProgram ? "Full Internship Program" : "Training Program"
+                })`
+              : ""
           );
           await sendEmail(
             values[2],
@@ -85,7 +95,11 @@ export async function POST(request: NextRequest) {
             text,
             values[0],
             values[1],
-            program ? program : ""
+            program
+              ? `${program}(${
+                  fullProgram ? "Full Internship Program" : "Training Program"
+                })`
+              : ""
           );
         }
       }
@@ -120,7 +134,8 @@ async function sendEmail(
   let html = externshipEmailTemplate(
     name,
     `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
-    "html"
+    "html",
+    program
   );
   const response = await fetch(
     `https://registration.elitegloblinternships.com/api/send-email`,

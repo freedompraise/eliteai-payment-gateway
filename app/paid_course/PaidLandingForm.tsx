@@ -71,7 +71,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     terms: "",
   });
   const [isValid, setIsValid] = useState(false);
-  const [getFullPogram, setGetFullPogram] = useState(true);
+  const [getFullProgram, setGetFullProgram] = useState(true);
   const [paystackAmount, setPaystackAmount] = useState(16000);
   const [paypalAmount, setPaypalAmount] = useState(10);
   const [validating, setValidating] = useState(false);
@@ -150,47 +150,9 @@ export default function PaidLandingForm({ setShowForm }: Params) {
     setIsValid(isValid);
   }
 
-  async function sendEmail(
-    to: string,
-    subject: string,
-    ref: string
-    // html: string
-  ) {
-    let program = courses.find((course) => formData.programs == course.code)
-      ?.course;
-    let text = externshipEmailTemplate(
-      formData.fullName,
-      program ? program : "",
-      `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
-      "text"
-    );
-    let html = externshipEmailTemplate(
-      formData.fullName,
-      program ? program : "",
-      `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
-      "html"
-    );
-    const response = await fetch("/api/send-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ to, subject, text, html }),
-    });
-
-    if (!response.ok) {
-      // Handle errors accordingly
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Failed to send email");
-    }
-
-    const data = await response.json();
-    return data;
-  }
-
   useEffect(() => {
-    getFullPogram ? setPaystackAmount(48000) : setPaystackAmount(16000);
-    getFullPogram ? setPaypalAmount(30) : setPaypalAmount(10);
+    getFullProgram ? setPaystackAmount(48000) : setPaystackAmount(16000);
+    getFullProgram ? setPaypalAmount(30) : setPaypalAmount(10);
   }, []);
 
   const paystackConfig = {
@@ -213,6 +175,7 @@ export default function PaidLandingForm({ setShowForm }: Params) {
             formData.linkedin,
             formData.phone_no,
             ref,
+            getFullProgram,
           ],
         },
       ],
@@ -392,36 +355,36 @@ export default function PaidLandingForm({ setShowForm }: Params) {
         <button
           type="button"
           onClick={() => {
-            setGetFullPogram(!getFullPogram);
+            setGetFullProgram(!getFullProgram);
             setPaystackAmount(16000);
             setPaypalAmount(10);
           }}
           className={`border-2 px-8 py-3 space-x-3 flex text-center items-center ${
-            !getFullPogram
+            !getFullProgram
               ? "border-accent text-white"
               : "border-black/10 text-gray-400"
           }`}
         >
           <CheckCheck
-            className={`${!getFullPogram ? "text-accent" : "text-gray-400"}`}
+            className={`${!getFullProgram ? "text-accent" : "text-gray-400"}`}
           />
           <p>Continue with AI Training Program</p>
         </button>
         <button
           type="button"
           onClick={() => {
-            setGetFullPogram(!getFullPogram);
+            setGetFullProgram(!getFullProgram);
             setPaystackAmount(48000);
             setPaypalAmount(30);
           }}
           className={`border-2 px-8 py-3 space-x-3 flex text-center items-center ${
-            getFullPogram
+            getFullProgram
               ? "border-accent text-white"
               : "border-black/10 text-gray-400"
           }`}
         >
           <CheckCheck
-            className={`${getFullPogram ? "text-accent" : "text-gray-400"}`}
+            className={`${getFullProgram ? "text-accent" : "text-gray-400"}`}
           />
           <p>Get Full Internship Program</p>
         </button>
