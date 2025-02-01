@@ -15,7 +15,7 @@ export default function externshipEmailTemplate(
 
 Dear ${participantName},
 
-Congratulations on successfully completing your payment and securing your spot in the EGIT Internship Program! We're thrilled to have you on board.
+Congratulations on successfully completing your payment and securing your spot in the EGIT Internship Program. We're thrilled to have you join us.
 
 Here is the link to the EGIT Internship Platform:
 ${externshipPlatformLink}
