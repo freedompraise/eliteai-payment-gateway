@@ -159,13 +159,11 @@ export default function PaidLandingForm({ setShowForm }: Params) {
       ?.course;
     let text = externshipEmailTemplate(
       formData.fullName,
-      program ? program : "",
       `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
       "text"
     );
     let html = externshipEmailTemplate(
       formData.fullName,
-      program ? program : "",
       `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
       "html"
     );
