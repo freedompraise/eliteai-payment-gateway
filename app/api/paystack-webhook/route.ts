@@ -76,7 +76,6 @@ export async function POST(request: NextRequest) {
             ?.course;
           let text = externshipEmailTemplate(
             values[1],
-            program ? program : "",
             `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
             "text"
           );
@@ -120,7 +119,6 @@ async function sendEmail(
 ) {
   let html = externshipEmailTemplate(
     name,
-    program,
     `https://registration.elitegloblinternships.com/paid_course?ref=${ref}`,
     "html"
   );
